@@ -21,10 +21,32 @@ I class
 
 	^ aNaturalNumber next.! !
 
-!I class methodsFor: 'as yet unclassified' stamp: 'TC 8/31/2021 16:13:28'!
+!I class methodsFor: 'as yet unclassified' stamp: 'TC 8/31/2021 19:04:06'!
+- aNaturalNumber
+
+	self error: self descripcionDeErrorDeNumerosNegativosNoSoportados.! !
+
+!I class methodsFor: 'as yet unclassified' stamp: 'TC 8/31/2021 19:02:12'!
 / aNaturalNumber
 
-	aNaturalNumber = I ifTrue: [^self].! !
+	aNaturalNumber = I ifTrue: [^self].
+	self error: self descripcionDeErrorDeNoSePuedeDividirPorUnNumeroMayor.! !
+
+!I class methodsFor: 'as yet unclassified' stamp: 'TC 8/31/2021 19:02:47'!
+descripcionDeErrorDeNoSePuedeDividirPorUnNumeroMayor
+
+	^ 'El divisor no puede ser mayor que el dividendo'.! !
+
+!I class methodsFor: 'as yet unclassified' stamp: 'TC 8/31/2021 19:04:55'!
+descripcionDeErrorDeNumerosNegativosNoSoportados
+
+	^ 'El sustraendo debe ser menor que el minuendo'.! !
+
+!I class methodsFor: 'as yet unclassified' stamp: 'TC 8/31/2021 19:08:35'!
+isGreaterOrEqualThan: aNaturalNumber
+    
+	aNaturalNumber = 1 ifTrue: [^ true].
+   	^ false.! !
 
 !I class methodsFor: 'as yet unclassified' stamp: 'TC 8/31/2021 15:40:47'!
 next
@@ -62,20 +84,31 @@ II class
 	aNaturalNumber  = I ifTrue: [^self previous].
 	^ self previous - aNaturalNumber previous.! !
 
-!II class methodsFor: 'as yet unclassified' stamp: 'TC 8/31/2021 16:03:46'!
+!II class methodsFor: 'as yet unclassified' stamp: 'TC 8/31/2021 19:03:01'!
 / aNaturalNumber
 
 	aNaturalNumber = I ifTrue: [^ self].
-        self = aNaturalNumber ifTrue: [^ I].
-        ^ I + ((self - aNaturalNumber) / aNaturalNumber).
-! !
+       self = aNaturalNumber ifTrue: [^ I].
+	(aNaturalNumber isGreaterOrEqualThan: self) ifTrue: [self error: self descripcionDeErrorDeNoSePuedeDividirPorUnNumeroMayor].
+       ^ I + ((self - aNaturalNumber) / aNaturalNumber).! !
 
-!II class methodsFor: 'as yet unclassified' stamp: 'TC 8/31/2021 16:23:01'!
+!II class methodsFor: 'as yet unclassified' stamp: 'TC 8/31/2021 19:03:30'!
+descripcionDeErrorDeNoSePuedeDividirPorUnNumeroMayor
+
+	^ 'El divisor no puede ser mayor que el dividendo'.! !
+
+!II class methodsFor: 'as yet unclassified' stamp: 'TC 8/31/2021 19:12:32'!
 initializeCollaboratorsFromFile
 	"Auto generated method for loading purposes - Do not modify it"
 
 	_next := III.
 	_previous := I.! !
+
+!II class methodsFor: 'as yet unclassified' stamp: 'TC 8/31/2021 19:09:25'!
+isGreaterOrEqualThan: aNaturalNumber
+    
+	self = aNaturalNumber ifTrue: [^ true].
+	^ (self previous) isGreaterOrEqualThan: aNaturalNumber.! !
 
 !II class methodsFor: 'as yet unclassified' stamp: 'TC 8/31/2021 15:54:11'!
 next
@@ -110,7 +143,7 @@ II subclass: #III
 III class
 	instanceVariableNames: ''!
 
-!III class methodsFor: 'as yet unclassified' stamp: 'TC 8/31/2021 16:23:01'!
+!III class methodsFor: 'as yet unclassified' stamp: 'TC 8/31/2021 19:12:32'!
 initializeCollaboratorsFromFile
 	"Auto generated method for loading purposes - Do not modify it"
 
@@ -131,7 +164,7 @@ II subclass: #IIII
 IIII class
 	instanceVariableNames: ''!
 
-!IIII class methodsFor: 'as yet unclassified' stamp: 'TC 8/31/2021 16:23:01'!
+!IIII class methodsFor: 'as yet unclassified' stamp: 'TC 8/31/2021 19:12:32'!
 initializeCollaboratorsFromFile
 	"Auto generated method for loading purposes - Do not modify it"
 
@@ -152,7 +185,7 @@ II subclass: #IIIII
 IIIII class
 	instanceVariableNames: ''!
 
-!IIIII class methodsFor: 'as yet unclassified' stamp: 'TC 8/31/2021 16:23:01'!
+!IIIII class methodsFor: 'as yet unclassified' stamp: 'TC 8/31/2021 19:12:32'!
 initializeCollaboratorsFromFile
 	"Auto generated method for loading purposes - Do not modify it"
 
@@ -173,7 +206,7 @@ II subclass: #IIIIII
 IIIIII class
 	instanceVariableNames: ''!
 
-!IIIIII class methodsFor: 'as yet unclassified' stamp: 'TC 8/31/2021 16:23:01'!
+!IIIIII class methodsFor: 'as yet unclassified' stamp: 'TC 8/31/2021 19:12:32'!
 initializeCollaboratorsFromFile
 	"Auto generated method for loading purposes - Do not modify it"
 
@@ -194,11 +227,11 @@ II subclass: #IIIIIII
 IIIIIII class
 	instanceVariableNames: ''!
 
-!IIIIIII class methodsFor: 'as yet unclassified' stamp: 'TC 8/31/2021 16:23:01'!
+!IIIIIII class methodsFor: 'as yet unclassified' stamp: 'TC 8/31/2021 19:12:32'!
 initializeCollaboratorsFromFile
 	"Auto generated method for loading purposes - Do not modify it"
 
-	_next := AnObsoleteIIIIIIII.
+	_next := nil.
 	_previous := IIIIII.! !
 
 II initializeAfterFileIn!
