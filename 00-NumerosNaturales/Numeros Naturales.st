@@ -9,49 +9,63 @@ DenotativeObject subclass: #I
 
 !classDefinition: 'I class' category: 'Numeros Naturales'!
 I class
-	instanceVariableNames: ''!
+	instanceVariableNames: 'descripcionDeErrorDeNumerosNegativosNoSoportados'!
 
-!I class methodsFor: 'as yet unclassified' stamp: 'TC 8/31/2021 15:40:28'!
-* aNaturalNumber
+!I class methodsFor: 'Comparaciones' stamp: 'TC 9/1/2021 12:29:35'!
+< aNaturalNumber
 
-	^ aNaturalNumber.! !
+	^ (self = aNaturalNumber) not.! !
 
-!I class methodsFor: 'as yet unclassified' stamp: 'TC 8/26/2021 21:13:59'!
-+ aNaturalNumber
+!I class methodsFor: 'Comparaciones' stamp: 'TC 9/1/2021 12:29:40'!
+<= aNaturalNumber
 
-	^ aNaturalNumber next.! !
+	^ true.! !
 
-!I class methodsFor: 'as yet unclassified' stamp: 'TC 8/31/2021 19:04:06'!
-- aNaturalNumber
 
-	self error: self descripcionDeErrorDeNumerosNegativosNoSoportados.! !
-
-!I class methodsFor: 'as yet unclassified' stamp: 'TC 8/31/2021 19:02:12'!
-/ aNaturalNumber
-
-	aNaturalNumber = I ifTrue: [^self].
-	self error: self descripcionDeErrorDeNoSePuedeDividirPorUnNumeroMayor.! !
-
-!I class methodsFor: 'as yet unclassified' stamp: 'TC 8/31/2021 19:02:47'!
+!I class methodsFor: 'Errores' stamp: 'TC 9/1/2021 12:29:50'!
 descripcionDeErrorDeNoSePuedeDividirPorUnNumeroMayor
 
-	^ 'El divisor no puede ser mayor que el dividendo'.! !
+	^ 'No se puede didividir por un numero mayor'.! !
 
-!I class methodsFor: 'as yet unclassified' stamp: 'TC 8/31/2021 19:04:55'!
+!I class methodsFor: 'Errores' stamp: 'TC 9/1/2021 12:29:55'!
 descripcionDeErrorDeNumerosNegativosNoSoportados
 
-	^ 'El sustraendo debe ser menor que el minuendo'.! !
+	^ 'Numeros negativos no soportados'.! !
 
-!I class methodsFor: 'as yet unclassified' stamp: 'TC 8/31/2021 19:08:35'!
-isGreaterOrEqualThan: aNaturalNumber
-    
-	aNaturalNumber = 1 ifTrue: [^ true].
-   	^ false.! !
 
-!I class methodsFor: 'as yet unclassified' stamp: 'TC 8/31/2021 15:40:47'!
+!I class methodsFor: 'Operaciones' stamp: 'TC 9/1/2021 12:34:34'!
+* aMultiplicand
+
+	^ aMultiplicand.! !
+
+!I class methodsFor: 'Operaciones' stamp: 'TC 9/1/2021 12:33:48'!
++ anAddend
+
+	^ anAddend next.! !
+
+!I class methodsFor: 'Operaciones' stamp: 'TC 9/1/2021 12:35:18'!
+- aSubtrahend
+
+	^ self error: self descripcionDeErrorDeNumerosNegativosNoSoportados.! !
+
+!I class methodsFor: 'Operaciones' stamp: 'TC 9/1/2021 12:36:19'!
+/ aDivisor
+
+	aDivisor <= I ifTrue: [^ I].
+	^ self error: self descripcionDeErrorDeNoSePuedeDividirPorUnNumeroMayor.! !
+
+
+!I class methodsFor: 'Relaciones internas' stamp: 'TC 9/1/2021 12:29:19'!
 next
 
 	^ II.! !
+
+
+!I class methodsFor: 'as yet unclassified' stamp: 'TC 9/1/2021 13:33:50'!
+initializeCollaboratorsFromFile
+	"Auto generated method for loading purposes - Do not modify it"
+
+	descripcionDeErrorDeNumerosNegativosNoSoportados := nil.! !
 
 
 !classDefinition: #II category: 'Numeros Naturales'!
@@ -65,69 +79,79 @@ DenotativeObject subclass: #II
 
 !classDefinition: 'II class' category: 'Numeros Naturales'!
 II class
-	instanceVariableNames: '_next _previous'!
+	instanceVariableNames: 'previous next descripcionDeErrorDeNoSePuedeDividirPorUnNumeroMayor'!
 
-!II class methodsFor: 'as yet unclassified' stamp: 'TC 8/31/2021 16:01:09'!
-* aNaturalNumber
+!II class methodsFor: 'Comparaciones' stamp: 'TC 9/1/2021 12:30:49'!
+< aNaturalNumber
 
-	aNaturalNumber = I ifTrue: [^self].
-	^ self + self * aNaturalNumber previous.! !
+	^ self next <= aNaturalNumber.! !
 
-!II class methodsFor: 'as yet unclassified' stamp: 'TC 8/26/2021 21:20:42'!
-+ aNaturalNumber
+!II class methodsFor: 'Comparaciones' stamp: 'TC 9/1/2021 12:30:58'!
+<= aNaturalNumber
 
-	^ self previous + aNaturalNumber next.! !
+	[(self - aNaturalNumber)] on: Error do: [^ true].
+	^ false.! !
 
-!II class methodsFor: 'as yet unclassified' stamp: 'TC 8/26/2021 21:52:53'!
-- aNaturalNumber 
-	
-	aNaturalNumber  = I ifTrue: [^self previous].
-	^ self previous - aNaturalNumber previous.! !
 
-!II class methodsFor: 'as yet unclassified' stamp: 'TC 8/31/2021 19:03:01'!
-/ aNaturalNumber
-
-	aNaturalNumber = I ifTrue: [^ self].
-       self = aNaturalNumber ifTrue: [^ I].
-	(aNaturalNumber isGreaterOrEqualThan: self) ifTrue: [self error: self descripcionDeErrorDeNoSePuedeDividirPorUnNumeroMayor].
-       ^ I + ((self - aNaturalNumber) / aNaturalNumber).! !
-
-!II class methodsFor: 'as yet unclassified' stamp: 'TC 8/31/2021 19:03:30'!
+!II class methodsFor: 'Errores' stamp: 'TC 9/1/2021 12:31:06'!
 descripcionDeErrorDeNoSePuedeDividirPorUnNumeroMayor
 
-	^ 'El divisor no puede ser mayor que el dividendo'.! !
+	^ 'No se puede dividir por un numero mayor'.! !
 
-!II class methodsFor: 'as yet unclassified' stamp: 'TC 8/31/2021 19:12:32'!
+
+!II class methodsFor: 'Operaciones' stamp: 'TC 9/1/2021 12:37:15'!
+* aMultiplicand
+
+	^ self previous * aMultiplicand + aMultiplicand.! !
+
+!II class methodsFor: 'Operaciones' stamp: 'TC 9/1/2021 12:37:39'!
++ anAddend
+
+	^ self previous + anAddend next.! !
+
+!II class methodsFor: 'Operaciones' stamp: 'TC 9/1/2021 13:33:38'!
+- aSubtrahend
+
+	aSubtrahend = I ifTrue: [^ self previous].
+	^ self previous - aSubtrahend previous.! !
+
+!II class methodsFor: 'Operaciones' stamp: 'TC 9/1/2021 12:38:11'!
+/ aDivisor	
+
+	| resta |
+	self = aDivisor ifTrue: [^ I].
+	(self < aDivisor) ifTrue: [^ self error: self descripcionDeErrorDeNoSePuedeDividirPorUnNumeroMayor].
+	resta _ self - aDivisor.
+	resta < aDivisor ifTrue: [^ I].
+	^ (resta / aDivisor) next.! !
+
+
+!II class methodsFor: 'Relaciones internas' stamp: 'TC 9/1/2021 12:32:25'!
+next
+
+	next ifNotNil: [^ next].
+	next := II createChildNamed: self name, 'I'.
+	next previous: self.
+	^next.! !
+
+!II class methodsFor: 'Relaciones internas' stamp: 'TC 9/1/2021 12:32:31'!
+previous
+
+	^ previous.! !
+
+!II class methodsFor: 'Relaciones internas' stamp: 'TC 9/1/2021 12:38:42'!
+previous: aNaturalNumber.
+
+	previous _ aNaturalNumber.! !
+
+
+!II class methodsFor: 'as yet unclassified' stamp: 'TC 9/1/2021 13:33:50'!
 initializeCollaboratorsFromFile
 	"Auto generated method for loading purposes - Do not modify it"
 
-	_next := III.
-	_previous := I.! !
-
-!II class methodsFor: 'as yet unclassified' stamp: 'TC 8/31/2021 19:09:25'!
-isGreaterOrEqualThan: aNaturalNumber
-    
-	self = aNaturalNumber ifTrue: [^ true].
-	^ (self previous) isGreaterOrEqualThan: aNaturalNumber.! !
-
-!II class methodsFor: 'as yet unclassified' stamp: 'TC 8/31/2021 15:54:11'!
-next
-
-	_next ifNotNil: [^_next].
-	_next _ II createChildNamed: self name, 'I'.
-	_next previous: self.
-	^ _next.
-	! !
-
-!II class methodsFor: 'as yet unclassified' stamp: 'TC 8/31/2021 15:54:17'!
-previous
-	
-	^ _previous.! !
-
-!II class methodsFor: 'as yet unclassified' stamp: 'TC 8/31/2021 15:54:17'!
-previous: aNaturalNumber
-	
-	_previous _ aNaturalNumber! !
+	previous := I.
+	next := III.
+	descripcionDeErrorDeNoSePuedeDividirPorUnNumeroMayor := nil.! !
 
 
 !classDefinition: #III category: 'Numeros Naturales'!
@@ -143,12 +167,13 @@ II subclass: #III
 III class
 	instanceVariableNames: ''!
 
-!III class methodsFor: 'as yet unclassified' stamp: 'TC 8/31/2021 19:12:32'!
+!III class methodsFor: 'as yet unclassified' stamp: 'TC 9/1/2021 13:33:50'!
 initializeCollaboratorsFromFile
 	"Auto generated method for loading purposes - Do not modify it"
 
-	_next := IIII.
-	_previous := II.! !
+	previous := II.
+	next := IIII.
+	descripcionDeErrorDeNoSePuedeDividirPorUnNumeroMayor := nil.! !
 
 
 !classDefinition: #IIII category: 'Numeros Naturales'!
@@ -164,12 +189,13 @@ II subclass: #IIII
 IIII class
 	instanceVariableNames: ''!
 
-!IIII class methodsFor: 'as yet unclassified' stamp: 'TC 8/31/2021 19:12:32'!
+!IIII class methodsFor: 'as yet unclassified' stamp: 'TC 9/1/2021 13:33:50'!
 initializeCollaboratorsFromFile
 	"Auto generated method for loading purposes - Do not modify it"
 
-	_next := IIIII.
-	_previous := III.! !
+	previous := III.
+	next := IIIII.
+	descripcionDeErrorDeNoSePuedeDividirPorUnNumeroMayor := nil.! !
 
 
 !classDefinition: #IIIII category: 'Numeros Naturales'!
@@ -185,12 +211,13 @@ II subclass: #IIIII
 IIIII class
 	instanceVariableNames: ''!
 
-!IIIII class methodsFor: 'as yet unclassified' stamp: 'TC 8/31/2021 19:12:32'!
+!IIIII class methodsFor: 'as yet unclassified' stamp: 'TC 9/1/2021 13:33:50'!
 initializeCollaboratorsFromFile
 	"Auto generated method for loading purposes - Do not modify it"
 
-	_next := IIIIII.
-	_previous := IIII.! !
+	previous := IIII.
+	next := IIIIII.
+	descripcionDeErrorDeNoSePuedeDividirPorUnNumeroMayor := nil.! !
 
 
 !classDefinition: #IIIIII category: 'Numeros Naturales'!
@@ -206,12 +233,13 @@ II subclass: #IIIIII
 IIIIII class
 	instanceVariableNames: ''!
 
-!IIIIII class methodsFor: 'as yet unclassified' stamp: 'TC 8/31/2021 19:12:32'!
+!IIIIII class methodsFor: 'as yet unclassified' stamp: 'TC 9/1/2021 13:33:50'!
 initializeCollaboratorsFromFile
 	"Auto generated method for loading purposes - Do not modify it"
 
-	_next := IIIIIII.
-	_previous := IIIII.! !
+	previous := IIIII.
+	next := IIIIIII.
+	descripcionDeErrorDeNoSePuedeDividirPorUnNumeroMayor := nil.! !
 
 
 !classDefinition: #IIIIIII category: 'Numeros Naturales'!
@@ -227,16 +255,225 @@ II subclass: #IIIIIII
 IIIIIII class
 	instanceVariableNames: ''!
 
-!IIIIIII class methodsFor: 'as yet unclassified' stamp: 'TC 8/31/2021 19:12:32'!
+!IIIIIII class methodsFor: 'as yet unclassified' stamp: 'TC 9/1/2021 13:33:50'!
 initializeCollaboratorsFromFile
 	"Auto generated method for loading purposes - Do not modify it"
 
-	_next := nil.
-	_previous := IIIIII.! !
+	previous := IIIIII.
+	next := IIIIIIII.
+	descripcionDeErrorDeNoSePuedeDividirPorUnNumeroMayor := nil.! !
 
+
+!classDefinition: #IIIIIIII category: 'Numeros Naturales'!
+II subclass: #IIIIIIII
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Numeros Naturales'!
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'IIIIIIII class' category: 'Numeros Naturales'!
+IIIIIIII class
+	instanceVariableNames: ''!
+
+!IIIIIIII class methodsFor: 'as yet unclassified' stamp: 'TC 9/1/2021 13:33:50'!
+initializeCollaboratorsFromFile
+	"Auto generated method for loading purposes - Do not modify it"
+
+	previous := IIIIIII.
+	next := IIIIIIIII.
+	descripcionDeErrorDeNoSePuedeDividirPorUnNumeroMayor := nil.! !
+
+
+!classDefinition: #IIIIIIIII category: 'Numeros Naturales'!
+II subclass: #IIIIIIIII
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Numeros Naturales'!
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'IIIIIIIII class' category: 'Numeros Naturales'!
+IIIIIIIII class
+	instanceVariableNames: ''!
+
+!IIIIIIIII class methodsFor: 'as yet unclassified' stamp: 'TC 9/1/2021 13:33:50'!
+initializeCollaboratorsFromFile
+	"Auto generated method for loading purposes - Do not modify it"
+
+	previous := IIIIIIII.
+	next := IIIIIIIIII.
+	descripcionDeErrorDeNoSePuedeDividirPorUnNumeroMayor := nil.! !
+
+
+!classDefinition: #IIIIIIIIII category: 'Numeros Naturales'!
+II subclass: #IIIIIIIIII
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Numeros Naturales'!
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'IIIIIIIIII class' category: 'Numeros Naturales'!
+IIIIIIIIII class
+	instanceVariableNames: ''!
+
+!IIIIIIIIII class methodsFor: 'as yet unclassified' stamp: 'TC 9/1/2021 13:33:50'!
+initializeCollaboratorsFromFile
+	"Auto generated method for loading purposes - Do not modify it"
+
+	previous := IIIIIIIII.
+	next := IIIIIIIIIII.
+	descripcionDeErrorDeNoSePuedeDividirPorUnNumeroMayor := nil.! !
+
+
+!classDefinition: #IIIIIIIIIII category: 'Numeros Naturales'!
+II subclass: #IIIIIIIIIII
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Numeros Naturales'!
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'IIIIIIIIIII class' category: 'Numeros Naturales'!
+IIIIIIIIIII class
+	instanceVariableNames: ''!
+
+!IIIIIIIIIII class methodsFor: 'as yet unclassified' stamp: 'TC 9/1/2021 13:33:50'!
+initializeCollaboratorsFromFile
+	"Auto generated method for loading purposes - Do not modify it"
+
+	previous := IIIIIIIIII.
+	next := IIIIIIIIIIII.
+	descripcionDeErrorDeNoSePuedeDividirPorUnNumeroMayor := nil.! !
+
+
+!classDefinition: #IIIIIIIIIIII category: 'Numeros Naturales'!
+II subclass: #IIIIIIIIIIII
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Numeros Naturales'!
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'IIIIIIIIIIII class' category: 'Numeros Naturales'!
+IIIIIIIIIIII class
+	instanceVariableNames: ''!
+
+!IIIIIIIIIIII class methodsFor: 'as yet unclassified' stamp: 'TC 9/1/2021 13:33:50'!
+initializeCollaboratorsFromFile
+	"Auto generated method for loading purposes - Do not modify it"
+
+	previous := IIIIIIIIIII.
+	next := IIIIIIIIIIIII.
+	descripcionDeErrorDeNoSePuedeDividirPorUnNumeroMayor := nil.! !
+
+
+!classDefinition: #IIIIIIIIIIIII category: 'Numeros Naturales'!
+II subclass: #IIIIIIIIIIIII
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Numeros Naturales'!
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'IIIIIIIIIIIII class' category: 'Numeros Naturales'!
+IIIIIIIIIIIII class
+	instanceVariableNames: ''!
+
+!IIIIIIIIIIIII class methodsFor: 'as yet unclassified' stamp: 'TC 9/1/2021 13:33:50'!
+initializeCollaboratorsFromFile
+	"Auto generated method for loading purposes - Do not modify it"
+
+	previous := IIIIIIIIIIII.
+	next := IIIIIIIIIIIIII.
+	descripcionDeErrorDeNoSePuedeDividirPorUnNumeroMayor := nil.! !
+
+
+!classDefinition: #IIIIIIIIIIIIII category: 'Numeros Naturales'!
+II subclass: #IIIIIIIIIIIIII
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Numeros Naturales'!
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'IIIIIIIIIIIIII class' category: 'Numeros Naturales'!
+IIIIIIIIIIIIII class
+	instanceVariableNames: ''!
+
+!IIIIIIIIIIIIII class methodsFor: 'as yet unclassified' stamp: 'TC 9/1/2021 13:33:50'!
+initializeCollaboratorsFromFile
+	"Auto generated method for loading purposes - Do not modify it"
+
+	previous := IIIIIIIIIIIII.
+	next := IIIIIIIIIIIIIII.
+	descripcionDeErrorDeNoSePuedeDividirPorUnNumeroMayor := nil.! !
+
+
+!classDefinition: #IIIIIIIIIIIIIII category: 'Numeros Naturales'!
+II subclass: #IIIIIIIIIIIIIII
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Numeros Naturales'!
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'IIIIIIIIIIIIIII class' category: 'Numeros Naturales'!
+IIIIIIIIIIIIIII class
+	instanceVariableNames: ''!
+
+!IIIIIIIIIIIIIII class methodsFor: 'as yet unclassified' stamp: 'TC 9/1/2021 13:33:50'!
+initializeCollaboratorsFromFile
+	"Auto generated method for loading purposes - Do not modify it"
+
+	previous := IIIIIIIIIIIIII.
+	next := IIIIIIIIIIIIIIII.
+	descripcionDeErrorDeNoSePuedeDividirPorUnNumeroMayor := nil.! !
+
+
+!classDefinition: #IIIIIIIIIIIIIIII category: 'Numeros Naturales'!
+II subclass: #IIIIIIIIIIIIIIII
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Numeros Naturales'!
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'IIIIIIIIIIIIIIII class' category: 'Numeros Naturales'!
+IIIIIIIIIIIIIIII class
+	instanceVariableNames: ''!
+
+!IIIIIIIIIIIIIIII class methodsFor: 'as yet unclassified' stamp: 'TC 9/1/2021 13:33:50'!
+initializeCollaboratorsFromFile
+	"Auto generated method for loading purposes - Do not modify it"
+
+	previous := IIIIIIIIIIIIIII.
+	next := nil.
+	descripcionDeErrorDeNoSePuedeDividirPorUnNumeroMayor := nil.! !
+
+I initializeAfterFileIn!
 II initializeAfterFileIn!
 III initializeAfterFileIn!
 IIII initializeAfterFileIn!
 IIIII initializeAfterFileIn!
 IIIIII initializeAfterFileIn!
 IIIIIII initializeAfterFileIn!
+IIIIIIII initializeAfterFileIn!
+IIIIIIIII initializeAfterFileIn!
+IIIIIIIIII initializeAfterFileIn!
+IIIIIIIIIII initializeAfterFileIn!
+IIIIIIIIIIII initializeAfterFileIn!
+IIIIIIIIIIIII initializeAfterFileIn!
+IIIIIIIIIIIIII initializeAfterFileIn!
+IIIIIIIIIIIIIII initializeAfterFileIn!
+IIIIIIIIIIIIIIII initializeAfterFileIn!
