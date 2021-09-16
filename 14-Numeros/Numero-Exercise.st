@@ -319,11 +319,6 @@ invalidNumberType
 
 	self error: self class invalidNumberTypeErrorDescription! !
 
-!Numero methodsFor: 'arithmetic operations' stamp: 'ds 9/12/2021 10:37:34'!
-inverse
-
-	self subclassResponsibility ! !
-
 !Numero methodsFor: 'arithmetic operations' stamp: 'NR 9/23/2018 23:37:13'!
 negated
 	
@@ -415,37 +410,6 @@ greatestCommonDivisorWith: anEntero
 	^ Entero with: (value gcd: anEntero integerValue).! !
 
 
-!Entero methodsFor: 'comparing' stamp: 'HernanWilkinson 5/7/2016 21:01'!
-= anObject
-
-	^(anObject isKindOf: self class) and: [ value = anObject integerValue ]! !
-
-!Entero methodsFor: 'comparing' stamp: 'HernanWilkinson 5/7/2016 20:17'!
-hash
-
-	^value hash! !
-
-
-!Entero methodsFor: 'initialization' stamp: 'HernanWilkinson 5/7/2016 20:09'!
-initalizeWith: aValue 
-	
-	value := aValue! !
-
-
-!Entero methodsFor: 'value' stamp: 'HernanWilkinson 5/7/2016 21:02'!
-integerValue
-
-	"Usamos integerValue en vez de value para que no haya problemas con el mensaje value implementado en Object - Hernan"
-	
-	^value! !
-
-
-!Entero methodsFor: 'printing' stamp: 'HAW 9/24/2018 08:53:19'!
-printOn: aStream
-
-	aStream print: value ! !
-
-
 !Entero methodsFor: 'arithmetic operations (internal)' stamp: 'TC 9/14/2021 12:43:49'!
 addWithEntero: anEnteroAdder
 
@@ -487,6 +451,52 @@ substractFromFraccion: aFraccion
 	^ Fraccion with: (aFraccion numerator - (self * aFraccion denominator)) over: aFraccion denominator.! !
 
 
+!Entero methodsFor: 'comparing' stamp: 'HernanWilkinson 5/7/2016 21:01'!
+= anObject
+
+	^(anObject isKindOf: self class) and: [ value = anObject integerValue ]! !
+
+!Entero methodsFor: 'comparing' stamp: 'HernanWilkinson 5/7/2016 20:17'!
+hash
+
+	^value hash! !
+
+
+!Entero methodsFor: 'fraccion creation' stamp: 'TC 9/16/2021 14:29:25'!
+createFraccionWithDenominator: aDenominator
+	
+	| greatestCommonDivisor numerator denominator |
+	
+	greatestCommonDivisor := self greatestCommonDivisorWith: aDenominator. 
+	numerator := self // greatestCommonDivisor.
+	denominator := aDenominator // greatestCommonDivisor.
+	
+	^ denominator initializeFraccionWithNumerator: numerator.! !
+
+!Entero methodsFor: 'fraccion creation' stamp: 'TC 9/16/2021 14:29:14'!
+createFraccionWithNumerator: aDividend
+
+	^ aDividend createFraccionWithDenominator: self.! !
+
+!Entero methodsFor: 'fraccion creation' stamp: 'TC 9/16/2021 14:29:25'!
+initializeFraccionWithNumerator: aNumerator
+
+	^ Fraccion new initializeWith: aNumerator over: self.
+! !
+
+
+!Entero methodsFor: 'initialization' stamp: 'HernanWilkinson 5/7/2016 20:09'!
+initalizeWith: aValue 
+	
+	value := aValue! !
+
+
+!Entero methodsFor: 'printing' stamp: 'HAW 9/24/2018 08:53:19'!
+printOn: aStream
+
+	aStream print: value ! !
+
+
 !Entero methodsFor: 'testing' stamp: 'NR 9/23/2018 22:17:55'!
 isNegative
 	
@@ -503,27 +513,12 @@ isZero
 	^value = 0! !
 
 
-!Entero methodsFor: 'fraccion creation' stamp: 'ds 9/15/2021 14:51:33'!
-createFractionWithDenominator: aDenominator
+!Entero methodsFor: 'value' stamp: 'HernanWilkinson 5/7/2016 21:02'!
+integerValue
+
+	"Usamos integerValue en vez de value para que no haya problemas con el mensaje value implementado en Object - Hernan"
 	
-	| greatestCommonDivisor numerator denominator |
-	
-	greatestCommonDivisor := self greatestCommonDivisorWith: aDenominator. 
-	numerator := self // greatestCommonDivisor.
-	denominator := aDenominator // greatestCommonDivisor.
-	
-	^ denominator initializeFractionWithNumerator: numerator.! !
-
-!Entero methodsFor: 'fraccion creation' stamp: 'ds 9/15/2021 14:51:21'!
-createFractionWithNumerator: aDividend
-
-	^ aDividend createFractionWithDenominator: self.! !
-
-!Entero methodsFor: 'fraccion creation' stamp: 'ds 9/15/2021 14:51:46'!
-initializeFractionWithNumerator: aNumerator
-
-	^ Fraccion new initializeWith: aNumerator over: self.
-! !
+	^value! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -552,37 +547,37 @@ Entero subclass: #Cero
 	poolDictionaries: ''
 	category: 'Numero-Exercise'!
 
-!Cero methodsFor: 'initialization' stamp: 'ds 9/12/2021 17:20:25'!
-initialize
-	
-	value := 0.! !
-
-!Cero methodsFor: 'initialization' stamp: 'ds 9/13/2021 18:43:11'!
-initializeFractionWithNumerator: aNumerator
-
-	^ self error: 'Can not initialize fraction with denominator 0'.! !
-
-!Cero methodsFor: 'initialization' stamp: 'ds 9/13/2021 18:06:39'!
-initializeWith: aValue
-	
-	self initialize.! !
-
-
 !Cero methodsFor: 'arithmetic operations' stamp: 'ds 9/12/2021 18:01:18'!
 fibonacci
 	
 	^ Entero with: 1.! !
 
 
-!Cero methodsFor: 'fraccion creation' stamp: 'ds 9/13/2021 19:23:42'!
-createFractionWithDenominator: aDenominator
+!Cero methodsFor: 'fraccion creation' stamp: 'TC 9/16/2021 14:29:01'!
+createFraccionWithDenominator: aDenominator
 	
 	^ self.! !
 
-!Cero methodsFor: 'fraccion creation' stamp: 'TC 9/14/2021 12:06:52'!
-createFractionWithNumerator: aNumerator
+!Cero methodsFor: 'fraccion creation' stamp: 'TC 9/16/2021 14:29:14'!
+createFraccionWithNumerator: aNumerator
 	
 	^ self error: Numero canNotDivideByZeroErrorDescription.! !
+
+!Cero methodsFor: 'fraccion creation' stamp: 'TC 9/16/2021 14:29:25'!
+initializeFraccionWithNumerator: aNumerator
+
+	^ self error: 'Can not initialize fraction with denominator 0'.! !
+
+
+!Cero methodsFor: 'initialization' stamp: 'ds 9/12/2021 17:20:25'!
+initialize
+	
+	value := 0.! !
+
+!Cero methodsFor: 'initialization' stamp: 'ds 9/13/2021 18:06:39'!
+initializeWith: aValue
+	
+	self initialize.! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -627,16 +622,16 @@ Entero subclass: #EnteroNegativo
 	poolDictionaries: ''
 	category: 'Numero-Exercise'!
 
-!EnteroNegativo methodsFor: 'initialization' stamp: 'ds 9/15/2021 15:03:54'!
-initializeWith: aValue
-	
-	value := aValue.! !
-
-
 !EnteroNegativo methodsFor: 'arithmetic operations' stamp: 'ds 9/12/2021 18:02:01'!
 fibonacci
 	
 	^ self error: Entero negativeFibonacciErrorDescription.! !
+
+
+!EnteroNegativo methodsFor: 'initialization' stamp: 'ds 9/15/2021 15:03:54'!
+initializeWith: aValue
+	
+	value := aValue.! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -657,26 +652,27 @@ Entero subclass: #Uno
 	poolDictionaries: ''
 	category: 'Numero-Exercise'!
 
+!Uno methodsFor: 'arithmetic operations' stamp: 'ds 9/12/2021 18:01:34'!
+fibonacci
+	
+	^ Entero with: 1.! !
+
+
+!Uno methodsFor: 'fraccion creation' stamp: 'TC 9/16/2021 14:29:25'!
+initializeFraccionWithNumerator: aNumerator
+	
+	^ aNumerator.! !
+
+
 !Uno methodsFor: 'initialization' stamp: 'ds 9/12/2021 17:20:14'!
 initialize
 	
 	value := 1.! !
 
-!Uno methodsFor: 'initialization' stamp: 'ds 9/13/2021 18:44:17'!
-initializeFractionWithNumerator: aNumerator
-	
-	^ aNumerator.! !
-
 !Uno methodsFor: 'initialization' stamp: 'ds 9/13/2021 18:06:57'!
 initializeWith: aValue
 	
 	self initialize.! !
-
-
-!Uno methodsFor: 'arithmetic operations' stamp: 'ds 9/12/2021 18:01:34'!
-fibonacci
-	
-	^ Entero with: 1.! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -696,6 +692,17 @@ Numero subclass: #Fraccion
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Numero-Exercise'!
+
+!Fraccion methodsFor: 'accessing' stamp: 'ds 9/12/2021 17:40:16'!
+denominator
+
+	^ Entero with: denominator integerValue.! !
+
+!Fraccion methodsFor: 'accessing' stamp: 'ds 9/12/2021 17:40:25'!
+numerator
+
+	^ Entero with: numerator integerValue.! !
+
 
 !Fraccion methodsFor: 'arithmetic operations' stamp: 'TC 9/14/2021 12:05:38'!
 * aMultiplier
@@ -723,64 +730,6 @@ Numero subclass: #Fraccion
 negated
 
 	^ (Entero with: -1) * self.! !
-
-
-!Fraccion methodsFor: 'comparing' stamp: 'HernanWilkinson 5/7/2016 20:42'!
-= anObject
-
-	^(anObject isKindOf: self class) and: [ (numerator * anObject denominator) = (denominator * anObject numerator) ]! !
-
-!Fraccion methodsFor: 'comparing' stamp: 'HernanWilkinson 5/7/2016 20:50'!
-hash
-
-	^(numerator hash / denominator hash) hash! !
-
-
-!Fraccion methodsFor: 'accessing' stamp: 'ds 9/12/2021 17:40:16'!
-denominator
-
-	^ Entero with: denominator integerValue.! !
-
-!Fraccion methodsFor: 'accessing' stamp: 'ds 9/12/2021 17:40:25'!
-numerator
-
-	^ Entero with: numerator integerValue.! !
-
-
-!Fraccion methodsFor: 'initialization' stamp: 'ds 9/12/2021 17:55:47'!
-initializeWith: aNumerator over: aDenominator
-
-	"Estas precondiciones estan por si se comenten errores en la implementacion - Hernan"
-	aNumerator isZero ifTrue: [ self error: 'una fraccion no puede ser cero' ].
-	aDenominator isOne ifTrue: [ self error: 'una fraccion no puede tener denominador 1 porque sino es un entero' ].
-	
-	numerator := Entero with: aNumerator integerValue.
-	denominator := Entero with: aDenominator integerValue. ! !
-
-
-!Fraccion methodsFor: 'testing' stamp: 'NR 9/23/2018 23:41:38'!
-isNegative
-	
-	^numerator < 0! !
-
-!Fraccion methodsFor: 'testing' stamp: 'HernanWilkinson 5/7/2016 22:51'!
-isOne
-	
-	^false! !
-
-!Fraccion methodsFor: 'testing' stamp: 'HernanWilkinson 5/7/2016 22:51'!
-isZero
-	
-	^false! !
-
-
-!Fraccion methodsFor: 'printing' stamp: 'HAW 9/24/2018 08:54:46'!
-printOn: aStream
-
-	aStream 
-		print: numerator;
-		nextPut: $/;
-		print: denominator ! !
 
 
 !Fraccion methodsFor: 'arithmetic operations (internal)' stamp: 'TC 9/14/2021 12:31:41'!
@@ -834,13 +783,60 @@ substractFromFraccion: aFraccion
 	
 	^ self class with: newNumerator over: newDenominator.! !
 
+
+!Fraccion methodsFor: 'comparing' stamp: 'HernanWilkinson 5/7/2016 20:42'!
+= anObject
+
+	^(anObject isKindOf: self class) and: [ (numerator * anObject denominator) = (denominator * anObject numerator) ]! !
+
+!Fraccion methodsFor: 'comparing' stamp: 'HernanWilkinson 5/7/2016 20:50'!
+hash
+
+	^(numerator hash / denominator hash) hash! !
+
+
+!Fraccion methodsFor: 'initialization' stamp: 'ds 9/12/2021 17:55:47'!
+initializeWith: aNumerator over: aDenominator
+
+	"Estas precondiciones estan por si se comenten errores en la implementacion - Hernan"
+	aNumerator isZero ifTrue: [ self error: 'una fraccion no puede ser cero' ].
+	aDenominator isOne ifTrue: [ self error: 'una fraccion no puede tener denominador 1 porque sino es un entero' ].
+	
+	numerator := Entero with: aNumerator integerValue.
+	denominator := Entero with: aDenominator integerValue. ! !
+
+
+!Fraccion methodsFor: 'printing' stamp: 'HAW 9/24/2018 08:54:46'!
+printOn: aStream
+
+	aStream 
+		print: numerator;
+		nextPut: $/;
+		print: denominator ! !
+
+
+!Fraccion methodsFor: 'testing' stamp: 'NR 9/23/2018 23:41:38'!
+isNegative
+	
+	^numerator < 0! !
+
+!Fraccion methodsFor: 'testing' stamp: 'HernanWilkinson 5/7/2016 22:51'!
+isOne
+	
+	^false! !
+
+!Fraccion methodsFor: 'testing' stamp: 'HernanWilkinson 5/7/2016 22:51'!
+isZero
+	
+	^false! !
+
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
 !classDefinition: 'Fraccion class' category: 'Numero-Exercise'!
 Fraccion class
 	instanceVariableNames: ''!
 
-!Fraccion class methodsFor: 'intance creation' stamp: 'ds 9/15/2021 14:56:36'!
+!Fraccion class methodsFor: 'intance creation' stamp: 'TC 9/16/2021 14:29:14'!
 with: aDividend over: aDivisor
 
-	^ aDivisor createFractionWithNumerator: aDividend.! !
+	^ aDivisor createFraccionWithNumerator: aDividend.! !
