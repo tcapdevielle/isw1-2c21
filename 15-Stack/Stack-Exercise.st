@@ -304,6 +304,11 @@ test15FindMatchesAllElementsInTheStack
 	
 	self assertResults: results areEqualTo: #('bali' 'batman is a superhero' 'bananas are my favourite fruit' 'bathing is nice').! !
 
+!SentenceFinderByPrefixTest methodsFor: 'tests' stamp: 'ds 9/20/2021 13:30:41'!
+test16FindWithNilStackReturnsError
+	
+	self assertThatSearchWithPrefix: 'Wint' inStack: nil producesError: SentenceFinderByPrefix sentenceFinderStackIsNilErrorDescription .! !
+
 
 !SentenceFinderByPrefixTest methodsFor: 'auxiliar' stamp: 'ds 9/19/2021 12:40:37'!
 assertResults: aListOfResults areEqualTo: anArrayOfExpectedResults
@@ -418,12 +423,13 @@ Object subclass: #SentenceFinderByPrefix
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!SentenceFinderByPrefix methodsFor: 'interface' stamp: 'ds 9/19/2021 13:11:15'!
+!SentenceFinderByPrefix methodsFor: 'interface' stamp: 'ds 9/20/2021 13:29:50'!
 find: aPrefix inStack: aStack
 
 	|results preservedItems |
 	
 	self ensurePrefixIsValid: aPrefix.
+	aStack ifNil: [self error: SentenceFinderByPrefix sentenceFinderStackIsNilErrorDescription ].
 	
 	results := OrderedCollection new.
 	preservedItems := OOStack new.
@@ -481,20 +487,25 @@ selectOnlyResults: aListOfResults whichMatchThisPrefix: aPrefix
 SentenceFinderByPrefix class
 	instanceVariableNames: ''!
 
-!SentenceFinderByPrefix class methodsFor: 'as yet unclassified' stamp: 'ds 9/18/2021 16:16:20'!
+!SentenceFinderByPrefix class methodsFor: 'error descriptions' stamp: 'ds 9/18/2021 16:16:20'!
 sentenceFinderEmptyQueryErrorDescription
 	
 	^ 'search query is empty!!!!!!'! !
 
-!SentenceFinderByPrefix class methodsFor: 'as yet unclassified' stamp: 'ds 9/18/2021 16:16:28'!
+!SentenceFinderByPrefix class methodsFor: 'error descriptions' stamp: 'ds 9/18/2021 16:16:28'!
 sentenceFinderNilQueryErrorDescription
 	
 	^ 'search query is nil!!!!!!'! !
 
-!SentenceFinderByPrefix class methodsFor: 'as yet unclassified' stamp: 'ds 9/18/2021 16:22:50'!
+!SentenceFinderByPrefix class methodsFor: 'error descriptions' stamp: 'ds 9/18/2021 16:22:50'!
 sentenceFinderQueryHasSpacesErrorDescription
 	
 	^ 'search query has spaces!!!!!!'! !
+
+!SentenceFinderByPrefix class methodsFor: 'error descriptions' stamp: 'ds 9/20/2021 13:28:35'!
+sentenceFinderStackIsNilErrorDescription
+	
+	^ 'stack is nil!!!!!!'! !
 
 
 !classDefinition: #StackElement category: 'Stack-Exercise'!
