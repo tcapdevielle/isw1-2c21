@@ -1,0 +1,1 @@
+nota: la imagen de Cuis se corrompió antes de que podamos terminar el ejercicio, así que el archivo user.changes aquí presente está incompleto (tiene el historial posterior a la corrupción de la imagen).
