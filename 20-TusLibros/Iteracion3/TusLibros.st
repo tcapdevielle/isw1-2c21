@@ -253,6 +253,14 @@ TestCase subclass: #RESTInterfaceTest
 	poolDictionaries: ''
 	category: 'TusLibros'!
 
+!RESTInterfaceTest methodsFor: 'auxiliary' stamp: 'ds 11/11/2021 16:43:23'!
+after31MinutesRunAndExpectExpiration: aBlockOfCode
+	
+	timeProvider advanceTimeByMinutes: 31.
+		self
+			assertRunning: aBlockOfCode
+			producesError: RESTInterface canNotUseCartAfter30MinutesErrorMessage.! !
+
 !RESTInterfaceTest methodsFor: 'auxiliary' stamp: 'ds 11/8/2021 20:20:29'!
 assertRunning: aBlockOfCode producesError: anError
 	
@@ -390,46 +398,31 @@ test04cartIdsAreAssignedIncrementally
 	self assert: 1 equals: (interface createCartFor: 'john' withPassword: 'hunter2').! !
 
 
-!RESTInterfaceTest methodsFor: 'tests - cart expiration' stamp: 'TC 11/11/2021 15:14:03'!
+!RESTInterfaceTest methodsFor: 'tests - cart expiration' stamp: 'ds 11/11/2021 16:43:58'!
 test19canNotListAnExpiredCart
 		
 	self withTestContext: [:interface :cartId :creditCard |
-		timeProvider advanceTimeByMinutes: 31.
-		self
-			assertRunning: [ interface listCart: cartId ]
-			producesError: RESTInterface canNotUseCartAfter30MinutesErrorMessage.
-	].
-	
-	
-	! !
+		self after31MinutesRunAndExpectExpiration: [ interface listCart: cartId ].
+	].! !
 
-!RESTInterfaceTest methodsFor: 'tests - cart expiration' stamp: 'TC 11/11/2021 15:14:40'!
+!RESTInterfaceTest methodsFor: 'tests - cart expiration' stamp: 'ds 11/11/2021 16:44:39'!
 test20canNotAddItemsToExpiredCart	
 		
 	self withTestContext: [:interface :cartId :creditCard |
-		timeProvider advanceTimeByMinutes: 31.
-		self
-			assertRunning: [ interface addToCart: cartId book: 'validBook' times: 1 ]
-			producesError: RESTInterface canNotUseCartAfter30MinutesErrorMessage.
-	].
-	
-	
-	! !
+		self after31MinutesRunAndExpectExpiration: [ interface addToCart: cartId book: 'validBook' times: 1 ].
+	].! !
 
-!RESTInterfaceTest methodsFor: 'tests - cart expiration' stamp: 'TC 11/11/2021 15:15:15'!
+!RESTInterfaceTest methodsFor: 'tests - cart expiration' stamp: 'ds 11/11/2021 16:44:52'!
 test21canNotCheckoutExpiredCart
 		
 	self withTestContext: [:interface :cartId :creditCard |
-		timeProvider advanceTimeByMinutes: 31.
-		self
-			assertRunning: [ interface checkOutCart: cartId withCard: testObjectsFactory notExpiredCreditCard ]
-			producesError: RESTInterface canNotUseCartAfter30MinutesErrorMessage.
+		self after31MinutesRunAndExpectExpiration: [ interface checkOutCart: cartId withCard: testObjectsFactory notExpiredCreditCard ].
 	].
 	
 	
 	! !
 
-!RESTInterfaceTest methodsFor: 'tests - cart expiration' stamp: 'TC 11/11/2021 15:16:07'!
+!RESTInterfaceTest methodsFor: 'tests - cart expiration' stamp: 'ds 11/11/2021 16:45:12'!
 test22cartLastTimeUsedIsRefreshedAfterEachUse
 		
 	self withTestContext: [:interface :cartId :creditCard |
@@ -438,11 +431,8 @@ test22cartLastTimeUsedIsRefreshedAfterEachUse
 	
 		timeProvider advanceTimeByMinutes: 15.
 		self assert: (interface listCart: cartId) isEmpty.
-	
-		timeProvider advanceTimeByMinutes: 31.
-		self
-			assertRunning: [ interface listCart: cartId ]
-			producesError: RESTInterface canNotUseCartAfter30MinutesErrorMessage.
+		
+		self after31MinutesRunAndExpectExpiration: [ interface listCart: cartId ].
 	].
 	
 	
@@ -963,6 +953,12 @@ createEmptySalesBookFor: aUser
 
 	^ usersSalesBook at: aUser put: (OrderedCollection new).! !
 
+!RESTInterface methodsFor: 'other' stamp: 'ds 11/11/2021 16:50:14'!
+createEmptySalesBookForUser: anUser
+	
+	^ usersSalesBook at: anUser put: OrderedCollection  new.
+! !
+
 !RESTInterface methodsFor: 'other' stamp: 'TC 11/11/2021 15:40:15'!
 salesBookForUserOwningCart: aCartId
 
@@ -972,13 +968,16 @@ salesBookForUserOwningCart: aCartId
 	^ usersSalesBook at: cartUser ifAbsent: [self createEmptySalesBookFor: cartUser].
 ! !
 
-!RESTInterface methodsFor: 'other' stamp: 'TC 11/11/2021 15:46:24'!
+!RESTInterface methodsFor: 'other' stamp: 'ds 11/11/2021 16:49:36'!
 salesReportForUser: aUser
 
-	| userSales |
+	^ UserPurchasesReport forSales: (self userSalesBookForUser: aUser).
+! !
+
+!RESTInterface methodsFor: 'other' stamp: 'ds 11/11/2021 16:50:24'!
+userSalesBookForUser: anUser
 	
-	userSales := usersSalesBook at: aUser ifAbsent: [^ UserPurchasesReport empty].
-	^ UserPurchasesReport forSales: userSales.
+	^ usersSalesBook at: anUser ifAbsent: [^ self createEmptySalesBookForUser: anUser].
 ! !
 
 
@@ -1286,9 +1285,10 @@ empty
 	
 	^ self new initializeWithTotal: 0 andItems: (Bag new).! !
 
-!UserPurchasesReport class methodsFor: 'instance creation' stamp: 'ds 11/10/2021 21:21:23'!
+!UserPurchasesReport class methodsFor: 'instance creation' stamp: 'ds 11/11/2021 16:47:33'!
 forSales: aListOfSales
 	
+	aListOfSales isEmpty ifTrue: [^ self empty].
 	^ self new initializeWith: aListOfSales.
 	! !
 
