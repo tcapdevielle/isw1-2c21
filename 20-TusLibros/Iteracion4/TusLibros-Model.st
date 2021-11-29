@@ -1,4 +1,4 @@
-!classDefinition: #Cart category: #'TusLibros-Model'!
+!classDefinition: #Cart category: 'TusLibros-Model'!
 Object subclass: #Cart
 	instanceVariableNames: 'catalog items'
 	classVariableNames: ''
@@ -102,7 +102,7 @@ remove: anItem
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'Cart class' category: #'TusLibros-Model'!
+!classDefinition: 'Cart class' category: 'TusLibros-Model'!
 Cart class
 	instanceVariableNames: ''!
 
@@ -123,7 +123,7 @@ acceptingItemsOf: aCatalog
 	^self new initializeAcceptingItemsOf: aCatalog ! !
 
 
-!classDefinition: #CartSession category: #'TusLibros-Model'!
+!classDefinition: #CartSession category: 'TusLibros-Model'!
 Object subclass: #CartSession
 	instanceVariableNames: 'owner cart lastUsedTime systemFacade'
 	classVariableNames: ''
@@ -210,7 +210,7 @@ removeFromCart: aBook
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'CartSession class' category: #'TusLibros-Model'!
+!classDefinition: 'CartSession class' category: 'TusLibros-Model'!
 CartSession class
 	instanceVariableNames: ''!
 
@@ -220,7 +220,7 @@ ownedBy: aCustomer with: aCart on: aSystemFacade
 	^self new initializeOwnedBy: aCustomer with: aCart on: aSystemFacade! !
 
 
-!classDefinition: #Cashier category: #'TusLibros-Model'!
+!classDefinition: #Cashier category: 'TusLibros-Model'!
 Object subclass: #Cashier
 	instanceVariableNames: 'cart salesBook merchantProcessor creditCard owner ticket'
 	classVariableNames: ''
@@ -288,7 +288,7 @@ initializeToCheckout: aCart ownedBy: anOwner charging: aCreditCard throught: aMe
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'Cashier class' category: #'TusLibros-Model'!
+!classDefinition: 'Cashier class' category: 'TusLibros-Model'!
 Cashier class
 	instanceVariableNames: ''!
 
@@ -339,7 +339,7 @@ signalCartCanNotBeEmpty
 	self error: self cartCanNotBeEmptyErrorMessage! !
 
 
-!classDefinition: #Clock category: #'TusLibros-Model'!
+!classDefinition: #Clock category: 'TusLibros-Model'!
 Object subclass: #Clock
 	instanceVariableNames: ''
 	classVariableNames: ''
@@ -357,7 +357,7 @@ today
 	self subclassResponsibility ! !
 
 
-!classDefinition: #RealClock category: #'TusLibros-Model'!
+!classDefinition: #RealClock category: 'TusLibros-Model'!
 Clock subclass: #RealClock
 	instanceVariableNames: 'now'
 	classVariableNames: ''
@@ -378,7 +378,7 @@ today
 	^ now date.! !
 
 
-!classDefinition: #CreditCard category: #'TusLibros-Model'!
+!classDefinition: #CreditCard category: 'TusLibros-Model'!
 Object subclass: #CreditCard
 	instanceVariableNames: 'expiration'
 	classVariableNames: ''
@@ -398,7 +398,7 @@ initializeExpiringOn: aMonth
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'CreditCard class' category: #'TusLibros-Model'!
+!classDefinition: 'CreditCard class' category: 'TusLibros-Model'!
 CreditCard class
 	instanceVariableNames: ''!
 
@@ -408,7 +408,7 @@ expiringOn: aMonth
 	^self new initializeExpiringOn: aMonth! !
 
 
-!classDefinition: #LineItem category: #'TusLibros-Model'!
+!classDefinition: #LineItem category: 'TusLibros-Model'!
 Object subclass: #LineItem
 	instanceVariableNames: 'item quantity total'
 	classVariableNames: ''
@@ -442,7 +442,7 @@ initializeOf: anItem quantity: aQuantity total: aTotal
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'LineItem class' category: #'TusLibros-Model'!
+!classDefinition: 'LineItem class' category: 'TusLibros-Model'!
 LineItem class
 	instanceVariableNames: ''!
 
@@ -454,7 +454,7 @@ of: anItem quantity: aQuantity total: aTotal
 ! !
 
 
-!classDefinition: #MerchantProcessor category: #'TusLibros-Model'!
+!classDefinition: #MerchantProcessor category: 'TusLibros-Model'!
 Object subclass: #MerchantProcessor
 	instanceVariableNames: 'debitBehavior'
 	classVariableNames: ''
@@ -478,17 +478,17 @@ initializeWith: aDebitBehavior
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'MerchantProcessor class' category: #'TusLibros-Model'!
+!classDefinition: 'MerchantProcessor class' category: 'TusLibros-Model'!
 MerchantProcessor class
 	instanceVariableNames: ''!
 
-!MerchantProcessor class methodsFor: 'as yet unclassified' stamp: 'ds 11/15/2021 20:43:42'!
+!MerchantProcessor class methodsFor: 'instance creation' stamp: 'ds 11/15/2021 20:43:42'!
 withDebitBehavior: aDebitBehavior
 	
 	^ self new initializeWith: aDebitBehavior.! !
 
 
-!classDefinition: #Sale category: #'TusLibros-Model'!
+!classDefinition: #Sale category: 'TusLibros-Model'!
 Object subclass: #Sale
 	instanceVariableNames: 'customer ticket'
 	classVariableNames: ''
@@ -521,7 +521,7 @@ lineItemsDo: aBlock
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'Sale class' category: #'TusLibros-Model'!
+!classDefinition: 'Sale class' category: 'TusLibros-Model'!
 Sale class
 	instanceVariableNames: ''!
 
@@ -531,7 +531,7 @@ doneBy: aCustomer certifiedWith: aTicket
 	^self new initializeDoneBy: aCustomer certifiedWith: aTicket ! !
 
 
-!classDefinition: #Ticket category: #'TusLibros-Model'!
+!classDefinition: #Ticket category: 'TusLibros-Model'!
 Object subclass: #Ticket
 	instanceVariableNames: 'lineItems'
 	classVariableNames: ''
@@ -557,7 +557,7 @@ lineItemsDo: aBlock
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'Ticket class' category: #'TusLibros-Model'!
+!classDefinition: 'Ticket class' category: 'TusLibros-Model'!
 Ticket class
 	instanceVariableNames: ''!
 
@@ -567,17 +567,17 @@ of: aCollectionOfLineItems
 	^self new initializeOf: aCollectionOfLineItems ! !
 
 
-!classDefinition: #TusLibrosRestServer category: #'TusLibros-Model'!
+!classDefinition: #TusLibrosRestServer category: 'TusLibros-Model'!
 Object subclass: #TusLibrosRestServer
 	instanceVariableNames: 'webServer port tusLibros'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'TusLibros-Model'!
 
-!TusLibrosRestServer methodsFor: 'enabling services' stamp: 'ds 11/15/2021 19:39:56'!
+!TusLibrosRestServer methodsFor: 'enabling services' stamp: 'TC 11/28/2021 21:12:40'!
 destroy
 	
-	webServer ifNotNil:[webServer destroy].! !
+	webServer ifNotNil: [webServer destroy].! !
 
 !TusLibrosRestServer methodsFor: 'enabling services' stamp: 'ds 11/15/2021 19:39:56'!
 startListening
@@ -595,21 +595,21 @@ stopListening
 	^'Stopped listening from port: ', self port asString! !
 
 
-!TusLibrosRestServer methodsFor: 'initialization' stamp: 'ds 11/28/2021 18:01:26'!
+!TusLibrosRestServer methodsFor: 'initialization' stamp: 'TC 11/28/2021 21:12:19'!
 initializeWith: aPortNumber andTusLibrosInstance: aTusLibrosInstance
 		
 	tusLibros := aTusLibrosInstance.
 	port:= aPortNumber.
 	webServer := WebServer new listenOn: self port.
 	
-	webServer addService: '/createCart' action:           [:request |	 self handleCreateCart: request].
-	webServer addService: '/addToCart' action:            [:request |	 self handleAddToCart: request].
-	webServer addService: '/removeFromCart' action: [:request |	 self handleRemoveFromCart: request].
-	webServer addService: '/cleanCart' action:              [:request |	 self handleCleanCart: request].
-	webServer addService: '/listCart' action:                  [:request |	 self handleListCart: request].
-	webServer addService: '/checkOutCart' action:       [:request |	 self handleCheckOutCart: request].
-	webServer addService: '/listPurchases' action:        [:request |	 self handleListPurchases: request].
-	webServer addService: '/catalog' action:                 [:request |	 self handleCatalog: request].! !
+	webServer addService: '/createCart' action:            					[:request |	 self handleCreateCart: request].
+	webServer addService: '/addToCart' action:             [:request |	 self handleAddToCart: request].
+	webServer addService: '/removeFromCart' action:   		[:request |	 self handleRemoveFromCart: request].
+	webServer addService: '/cleanCart' action:              				[:request |	 self handleCleanCart: request].
+	webServer addService: '/listCart' action:                  				[:request |	 self handleListCart: request].
+	webServer addService: '/checkOutCart' action:       								[:request |	 self handleCheckOutCart: request].
+	webServer addService: '/listPurchases' action:        								[:request |	 self handleListPurchases: request].
+	webServer addService: '/catalog' action:                 							[:request |	 self handleCatalog: request].! !
 
 
 !TusLibrosRestServer methodsFor: 'parameter extractors' stamp: 'ds 11/15/2021 21:15:47'!
@@ -666,10 +666,10 @@ extractUserFrom: aRequest
 		! !
 
 
-!TusLibrosRestServer methodsFor: 'route handlers' stamp: 'ds 11/28/2021 17:19:52'!
+!TusLibrosRestServer methodsFor: 'route handlers' stamp: 'TC 11/28/2021 21:13:28'!
 handleAddToCart: aRequest
 	
-	|cart book quantity |
+	| cart book quantity |
 	
 	self onErrorReturn400: [
 		cart := self extractCartIdFrom: aRequest.
@@ -683,25 +683,25 @@ handleAddToCart: aRequest
 	] with: aRequest.
 ! !
 
-!TusLibrosRestServer methodsFor: 'route handlers' stamp: 'ds 11/28/2021 17:47:48'!
+!TusLibrosRestServer methodsFor: 'route handlers' stamp: 'TC 11/28/2021 21:14:57'!
 handleCatalog: aRequest
 
 	self
 		send200Json: aRequest
-		withData: (tusLibros catalog).
+		withData: tusLibros catalog.
 ! !
 
-!TusLibrosRestServer methodsFor: 'route handlers' stamp: 'ds 11/28/2021 17:46:38'!
+!TusLibrosRestServer methodsFor: 'route handlers' stamp: 'TC 11/28/2021 21:16:49'!
 handleCheckOutCart: aRequest
 	
-	|cart creditCardNumber creditCardExpirationMonth creditCardExpirationYear creditCardOwner|
+	| cart creditCardNumber creditCardExpirationMonth creditCardExpirationYear creditCardOwner |
 	
 	self onErrorReturn400: [
 		cart := self extractCartIdFrom: aRequest.
 		creditCardNumber := self extractCreditCardNumberFrom: aRequest.
 		creditCardExpirationMonth := self extractExpirationMonthFrom: aRequest.
 		creditCardExpirationYear := self extractExpirationYearFrom: aRequest.
-		creditCardOwner := (self extractCreditCardOwnerFrom: aRequest).
+		creditCardOwner := self extractCreditCardOwnerFrom: aRequest.
 	] with: aRequest.
 		
 	self onErrorReturn200: [  | ticket|
@@ -732,10 +732,10 @@ handleCleanCart: aRequest
 	] with: aRequest.
 ! !
 
-!TusLibrosRestServer methodsFor: 'route handlers' stamp: 'ds 11/28/2021 17:45:46'!
+!TusLibrosRestServer methodsFor: 'route handlers' stamp: 'TC 11/28/2021 21:14:38'!
 handleCreateCart: aRequest
 	
-	|user password|
+	| user password |
 	
 	self onErrorReturn400: [
 		user := self extractUserFrom: aRequest.
@@ -750,10 +750,10 @@ handleCreateCart: aRequest
 	] with: aRequest.
 ! !
 
-!TusLibrosRestServer methodsFor: 'route handlers' stamp: 'ds 11/28/2021 17:44:23'!
+!TusLibrosRestServer methodsFor: 'route handlers' stamp: 'TC 11/28/2021 21:17:20'!
 handleListCart: aRequest
 	
-	| cart listCart|
+	| cart listCart |
 	
 	self onErrorReturn400: [
 		cart := self extractCartIdFrom: aRequest.
@@ -763,7 +763,7 @@ handleListCart: aRequest
 		listCart := tusLibros listCartIdentifiedAs: cart.
 		self
 			send200Json: aRequest
-			withData: (listCart asOrderedCollection asArray).
+			withData: (listCart asArray).
 	] with: aRequest.
 ! !
 
@@ -801,22 +801,22 @@ handleRemoveFromCart: aRequest
 ! !
 
 
-!TusLibrosRestServer methodsFor: 'responses' stamp: 'ds 11/27/2021 18:08:40'!
+!TusLibrosRestServer methodsFor: 'responses' stamp: 'TC 11/28/2021 21:19:43'!
 onErrorReturn200: aBlockOfCode with: request
 
 	^ [aBlockOfCode value]
 		on: Error
 		do: [:anError |
 			request send200Response: 
-				(WebUtils jsonEncode: ((Dictionary newFromPairs: {'message'. (anError messageText)})))
+				(WebUtils jsonEncode: (Dictionary newFromPairs: {'message'. (anError messageText)}))
 		].! !
 
-!TusLibrosRestServer methodsFor: 'responses' stamp: 'ds 11/15/2021 21:05:56'!
+!TusLibrosRestServer methodsFor: 'responses' stamp: 'TC 11/28/2021 21:20:02'!
 onErrorReturn400: aBlockOfCode with: request
 
 	^ [aBlockOfCode value]
 		on: Error
-		do: [:anError | request send400Response: (anError messageText)].! !
+		do: [:anError | request send400Response: anError messageText].! !
 
 !TusLibrosRestServer methodsFor: 'responses' stamp: 'ds 11/28/2021 17:45:11'!
 send200Json: aRequest withData: aCollection
@@ -824,10 +824,10 @@ send200Json: aRequest withData: aCollection
 	aRequest send200Response: (WebUtils jsonEncode: aCollection).! !
 
 
-!TusLibrosRestServer methodsFor: 'accessing' stamp: 'ds 11/28/2021 17:15:39'!
+!TusLibrosRestServer methodsFor: 'accessing' stamp: 'TC 11/28/2021 21:12:58'!
 port
 	
-	^port ifNil: [port:=8080].
+	^ port ifNil: [port := 8080].
 	
 	! !
 
@@ -854,11 +854,11 @@ buildTicketResponseFor: aTicket
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'TusLibrosRestServer class' category: #'TusLibros-Model'!
+!classDefinition: 'TusLibrosRestServer class' category: 'TusLibros-Model'!
 TusLibrosRestServer class
 	instanceVariableNames: ''!
 
-!TusLibrosRestServer class methodsFor: 'as yet unclassified' stamp: 'ds 11/28/2021 16:09:17'!
+!TusLibrosRestServer class methodsFor: 'instance creation' stamp: 'TC 11/28/2021 21:59:16'!
 listeningOn: aPortNumber
 
 	|authDict tusLibros|
@@ -867,7 +867,7 @@ listeningOn: aPortNumber
 	
 	tusLibros := TusLibrosSystemFacade
 		authenticatingWith: authDict 
-		acceptingItemsOf: StoreTestObjectsFactory sampleServerCatalog
+		acceptingItemsOf: StoreTestObjectsFactory new sampleServerCatalog
 		registeringOn: OrderedCollection new
 		debitingThrought: (MerchantProcessor withDebitBehavior: [ :anAmount :aCreditCard | ])
 		measuringTimeWith: RealClock new.
@@ -875,7 +875,7 @@ listeningOn: aPortNumber
 	^self new initializeWith: aPortNumber andTusLibrosInstance: tusLibros.! !
 
 
-!classDefinition: #TusLibrosSystemFacade category: #'TusLibros-Model'!
+!classDefinition: #TusLibrosSystemFacade category: 'TusLibros-Model'!
 Object subclass: #TusLibrosSystemFacade
 	instanceVariableNames: 'validUsersAndPasswords catalog lastId merchantProcessor salesBook clock cartSessions'
 	classVariableNames: ''
@@ -1100,7 +1100,7 @@ initializeAuthenticatingWith: aValidUsersAndPasswords
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'TusLibrosSystemFacade class' category: #'TusLibros-Model'!
+!classDefinition: 'TusLibrosSystemFacade class' category: 'TusLibros-Model'!
 TusLibrosSystemFacade class
 	instanceVariableNames: ''!
 

@@ -1,6 +1,6 @@
-!classDefinition: #TusLibrosCatalogWindow category: #'TusLibros-Client'!
+!classDefinition: #TusLibrosCatalogWindow category: 'TusLibros-Client'!
 Panel subclass: #TusLibrosCatalogWindow
-	instanceVariableNames: 'bookLabelMorphs user bookCatalogListMorph quantityTextBoxMorph cartListMorph'
+	instanceVariableNames: 'bookLabelMorphs bookCatalogListMorph quantityTextBoxMorph cartListMorph'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'TusLibros-Client'!
@@ -24,20 +24,29 @@ initializeWith: aTitle for: aCartId andUser: anUser withPassword: aPassword
 	self model sendCatalogRequest.! !
 
 
-!TusLibrosCatalogWindow methodsFor: 'access' stamp: 'ds 11/27/2021 18:56:46'!
+!TusLibrosCatalogWindow methodsFor: 'accessing' stamp: 'ds 11/27/2021 18:56:46'!
 defaultExtent
 
 	^ 1000@600.
 	! !
 
 
-!TusLibrosCatalogWindow methodsFor: 'GUI building' stamp: 'ds 11/28/2021 17:13:25'!
+!TusLibrosCatalogWindow methodsFor: 'GUI building' stamp: 'TC 11/28/2021 22:05:37'!
 buildCartListColumn
 	
 	| firstColumnLayoutMorphOfSecondRow |
 	
-	cartListMorph := PluggableListMorph model: self model listGetter: #cart indexGetter: #cartListIndex indexSetter: #cartListIndex:.
-	cartListMorph  borderColor: Color skyBlue; borderWidth: 1; morphWidth:250; morphHeight: 300.
+	cartListMorph := PluggableListMorph 
+		model: self model 
+		listGetter: #cart 
+		indexGetter: #cartListIndex 
+		indexSetter: #cartListIndex:.
+		
+	cartListMorph  
+		borderColor: Color skyBlue; 
+		borderWidth: 1; 
+		morphWidth:250; 
+		morphHeight: 300.
 		
 	firstColumnLayoutMorphOfSecondRow := LayoutMorph newColumn.
 	firstColumnLayoutMorphOfSecondRow separation: 5; 
@@ -45,20 +54,32 @@ buildCartListColumn
 	addMorph: (LabelMorph contents:'Cart Contents');
 	addMorph: cartListMorph.
 		
-	^firstColumnLayoutMorphOfSecondRow.! !
+	^ firstColumnLayoutMorphOfSecondRow.! !
 
-!TusLibrosCatalogWindow methodsFor: 'GUI building' stamp: 'ds 11/28/2021 16:58:46'!
+!TusLibrosCatalogWindow methodsFor: 'GUI building' stamp: 'TC 11/28/2021 22:16:16'!
 buildLeftColumn
+
 	| listPurchasesButtonMorph addToCartButtonMorph columnMorph |
 	
-	listPurchasesButtonMorph := PluggableButtonMorph model: self model stateGetter: nil  action: #sendListPurchasesRequest label: 'List Purchases'.	
+	listPurchasesButtonMorph := self createButtonForAction: #sendListPurchasesRequest withLabel: 'List Purchases'.	 
 	
-	quantityTextBoxMorph := TextModelMorph textProvider: self model textGetter: #quantity textSetter: #quantity:. 
-	quantityTextBoxMorph innerTextMorph setProperty: #keyStroke: toValue: [ :key | quantityTextBoxMorph innerTextMorph acceptContents ] .
-	quantityTextBoxMorph  borderWidth: 1; borderColor: Color skyBlue; morphWidth: 100; morphHeight: 20. 
+	quantityTextBoxMorph := TextModelMorph 
+		textProvider: self model 
+		textGetter: #quantity 
+		textSetter: #quantity:. 
+		
+	quantityTextBoxMorph innerTextMorph 
+		setProperty: #keyStroke: 
+		toValue: [ :key | quantityTextBoxMorph innerTextMorph acceptContents ].
+		
+	quantityTextBoxMorph 
+		borderWidth: 1; 
+		borderColor: Color skyBlue; 
+		morphWidth: 100; 
+		morphHeight: 20. 
 	
-	addToCartButtonMorph := PluggableButtonMorph model: self model stateGetter: nil  action: #sendAddToCartRequest label: 'Add To Cart'.	
-	
+	addToCartButtonMorph := 	self createButtonForAction: #sendAddToCartRequest withLabel: 'Add To Cart'.	 
+ 
 	columnMorph := LayoutMorph newColumn.
 	columnMorph separation: 25;
 	axisEdgeWeight: 0.5;
@@ -67,15 +88,24 @@ buildLeftColumn
 	addMorph: quantityTextBoxMorph;
 	addMorph: addToCartButtonMorph.
 	
-	^columnMorph.! !
+	^ columnMorph.! !
 
-!TusLibrosCatalogWindow methodsFor: 'GUI building' stamp: 'ds 11/28/2021 17:12:45'!
+!TusLibrosCatalogWindow methodsFor: 'GUI building' stamp: 'TC 11/28/2021 22:07:47'!
 buildListColumn
 	
 	| firstColumnLayoutMorphOfSecondRow |
 	
-	bookCatalogListMorph := PluggableListMorph model: self model listGetter: #books indexGetter: #booksListIndex indexSetter: #booksListIndex:.
-	bookCatalogListMorph  borderColor: Color skyBlue; borderWidth: 1; morphWidth:250; morphHeight: 300.
+	bookCatalogListMorph := PluggableListMorph 
+		model: self model 
+		listGetter: #books 
+		indexGetter: #booksListIndex 
+		indexSetter: #booksListIndex:.
+		
+	bookCatalogListMorph 
+		borderColor: Color skyBlue; 
+		borderWidth: 1; 
+		morphWidth: 250; 
+		morphHeight: 300.
 		
 	firstColumnLayoutMorphOfSecondRow := LayoutMorph newColumn.
 	firstColumnLayoutMorphOfSecondRow separation: 5; 
@@ -83,7 +113,7 @@ buildListColumn
 	addMorph: (LabelMorph contents:'Available Books');
 	addMorph: bookCatalogListMorph.
 		
-	^firstColumnLayoutMorphOfSecondRow.! !
+	^ firstColumnLayoutMorphOfSecondRow.! !
 
 !TusLibrosCatalogWindow methodsFor: 'GUI building' stamp: 'ds 11/28/2021 17:12:48'!
 buildMorphicWindow
@@ -95,23 +125,33 @@ buildMorphicWindow
 	addMorph: self buildRightColumn.
 	! !
 
-!TusLibrosCatalogWindow methodsFor: 'GUI building' stamp: 'ds 11/28/2021 17:01:10'!
+!TusLibrosCatalogWindow methodsFor: 'GUI building' stamp: 'TC 11/28/2021 22:16:31'!
 buildRightColumn
+
 	| cleanCartButtonMorph removeButtonMorph checkOutButtonMorph columnMorph |
 	
-	cleanCartButtonMorph := PluggableButtonMorph model: self model stateGetter: nil  action: #cleanCart label: 'Clean Cart'.	
-	removeButtonMorph := PluggableButtonMorph model: self model stateGetter: nil  action: #sendRemoveFromCartRequest label: 'Remove from cart'.	
-	checkOutButtonMorph := PluggableButtonMorph model: self model stateGetter: nil  action: #sendCheckoutRequest label: 'Check Out'.	
+	cleanCartButtonMorph := self createButtonForAction: #cleanCart withLabel: 'Clean Cart'.	
+	removeButtonMorph := self createButtonForAction: #sendRemoveFromCartRequest  withLabel: 'Remove from cart'.
+	checkOutButtonMorph := self createButtonForAction: #sendCheckoutRequest  withLabel: 'Check Out'.
 	
 	columnMorph := LayoutMorph newColumn.
 	columnMorph separation: 25;
-	axisEdgeWeight: 0.5;
+	axisEdgeWeight: 0.5;	
 	addMorph: cleanCartButtonMorph;
 	addMorph: self buildCartListColumn;
 	addMorph: removeButtonMorph;
 	addMorph: checkOutButtonMorph.
 	
-	^columnMorph.! !
+	^ columnMorph.! !
+
+!TusLibrosCatalogWindow methodsFor: 'GUI building' stamp: 'TC 11/28/2021 22:11:45'!
+createButtonForAction: anAction withLabel: aButtonLabel
+
+	^ PluggableButtonMorph 
+		model: self model 
+		stateGetter: nil  
+		action: anAction 
+		label: aButtonLabel.	! !
 
 
 !TusLibrosCatalogWindow methodsFor: 'events' stamp: 'ds 11/28/2021 16:35:14'!
@@ -136,7 +176,7 @@ refreshListOfBooks
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'TusLibrosCatalogWindow class' category: #'TusLibros-Client'!
+!classDefinition: 'TusLibrosCatalogWindow class' category: 'TusLibros-Client'!
 TusLibrosCatalogWindow class
 	instanceVariableNames: ''!
 
@@ -146,7 +186,7 @@ openFor: aCartId andUser: anUser withPassword: aPassword
 	^self new initializeWith: 'TusLibros Client - Catalog' for: aCartId andUser: anUser withPassword: aPassword.! !
 
 
-!classDefinition: #TusLibrosListPurchasesWindow category: #'TusLibros-Client'!
+!classDefinition: #TusLibrosListPurchasesWindow category: 'TusLibros-Client'!
 Panel subclass: #TusLibrosListPurchasesWindow
 	instanceVariableNames: 'purchasesList'
 	classVariableNames: ''
@@ -159,30 +199,35 @@ defaultExtent
 	^ 400@600.! !
 
 
-!TusLibrosListPurchasesWindow methodsFor: 'GUI building' stamp: 'ds 11/28/2021 17:11:09'!
-addItemDetail: anItemDetail named: itemName toPurchaseList: aPurchaseListMorph
-	|itemQuantity itemPrice|
+!TusLibrosListPurchasesWindow methodsFor: 'GUI building' stamp: 'TC 11/28/2021 21:30:43'!
+addItemDetail: anItemDetail named: anItemName toPurchaseList: aPurchaseListMorph
+
+	| itemQuantity itemPrice |
 	
 	itemQuantity := (anItemDetail at: 'quantity') asString.
 	itemPrice := (anItemDetail at: 'price') asString.
 
 	aPurchaseListMorph addMorph: 
-		(LabelMorph contents: (itemName, ' x', itemQuantity, '    $', itemPrice)).	
+		(LabelMorph contents: (anItemName, ' x', itemQuantity, '    $', itemPrice)).	
 	! !
 
-!TusLibrosListPurchasesWindow methodsFor: 'GUI building' stamp: 'ds 11/28/2021 17:11:46'!
+!TusLibrosListPurchasesWindow methodsFor: 'GUI building' stamp: 'TC 11/28/2021 21:31:54'!
 buildListOfPurchases
-	|purchaseListMorph totalSpent|
+
+	| purchaseListMorph totalSpent |
+	
 	purchaseListMorph := LayoutMorph newColumn.
 	purchaseListMorph separation: 5.
 	purchaseListMorph axisEdgeWeight: 0.5.
 	
 	purchaseListMorph addMorph: (LabelMorph contents: 'Items:').
 	purchaseListMorph addMorph: (LabelMorph contents: '=====================').
+	
 	(purchasesList at: 'items') keysAndValuesDo: [:bookName :bookDetail | 
 		self addItemDetail: bookDetail named: bookName  toPurchaseList: purchaseListMorph
 	]. 
 	purchaseListMorph addMorph: (LabelMorph contents: '=====================').
+	
 	purchaseListMorph addMorph: (LabelMorph contents: 'Total:').
 	totalSpent := (purchasesList at: 'total' ifAbsent: [0]) asString.
 	purchaseListMorph addMorph: (LabelMorph contents: ('$',totalSpent)).	
@@ -190,13 +235,14 @@ buildListOfPurchases
 	^ purchaseListMorph.
 	! !
 
-!TusLibrosListPurchasesWindow methodsFor: 'GUI building' stamp: 'ds 11/27/2021 19:51:36'!
+!TusLibrosListPurchasesWindow methodsFor: 'GUI building' stamp: 'TC 11/28/2021 21:30:55'!
 buildMorphicWindow
 		
-	self layoutMorph beColumn;
-	separation: 5;
-	axisEdgeWeight: 0;
-	addMorph: self buildListOfPurchases.
+	self 
+		layoutMorph beColumn;
+		separation: 5;
+		axisEdgeWeight: 0;
+		addMorph: self buildListOfPurchases.
 	! !
 
 
@@ -213,17 +259,17 @@ initializeWith: aTitle for: aListOfPurchases
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'TusLibrosListPurchasesWindow class' category: #'TusLibros-Client'!
+!classDefinition: 'TusLibrosListPurchasesWindow class' category: 'TusLibros-Client'!
 TusLibrosListPurchasesWindow class
 	instanceVariableNames: ''!
 
-!TusLibrosListPurchasesWindow class methodsFor: 'as yet unclassified' stamp: 'ds 11/27/2021 19:33:15'!
+!TusLibrosListPurchasesWindow class methodsFor: 'instance creation' stamp: 'ds 11/27/2021 19:33:15'!
 openFor: aListOfPurchases
 	
 	^self new initializeWith: 'TusLibros Client - Purchase List' for: aListOfPurchases.! !
 
 
-!classDefinition: #TusLibrosLoginWindow category: #'TusLibros-Client'!
+!classDefinition: #TusLibrosLoginWindow category: 'TusLibros-Client'!
 Panel subclass: #TusLibrosLoginWindow
 	instanceVariableNames: 'userTextBoxMorph passwordTextBoxMorph wordsListMorph'
 	classVariableNames: ''
@@ -241,20 +287,31 @@ initializeWith: aTitle
 	self openInWorld.! !
 
 
-!TusLibrosLoginWindow methodsFor: 'access' stamp: 'ds 11/27/2021 18:47:07'!
+!TusLibrosLoginWindow methodsFor: 'accessing' stamp: 'ds 11/27/2021 18:47:07'!
 defaultExtent
 
 	^ 500@500
 	! !
 
 
-!TusLibrosLoginWindow methodsFor: 'GUI building' stamp: 'ds 11/27/2021 18:49:23'!
+!TusLibrosLoginWindow methodsFor: 'GUI building' stamp: 'TC 11/28/2021 21:22:31'!
 build1stRow
 	| firstRowLayoutMorph |	
 	
-	userTextBoxMorph := TextModelMorph textProvider: self model textGetter: #user textSetter: #user:. 
-	userTextBoxMorph innerTextMorph setProperty: #keyStroke: toValue: [ :key | userTextBoxMorph innerTextMorph acceptContents ] .
-	userTextBoxMorph  borderWidth: 1; borderColor: Color skyBlue; morphWidth: 150; morphHeight: 20. 
+	userTextBoxMorph := TextModelMorph 
+		textProvider: self model 
+		textGetter: #user 
+		textSetter: #user:. 
+		
+	userTextBoxMorph innerTextMorph 
+		setProperty: #keyStroke: 
+		toValue: [ :key | userTextBoxMorph innerTextMorph acceptContents ].
+		
+	userTextBoxMorph  
+		borderWidth: 1; 
+		borderColor: Color skyBlue; 
+		morphWidth: 150; 
+		morphHeight: 20. 
 		
 	firstRowLayoutMorph := LayoutMorph newRow.
 	firstRowLayoutMorph separation: 20;
@@ -264,14 +321,25 @@ build1stRow
 	
 	^ firstRowLayoutMorph.! !
 
-!TusLibrosLoginWindow methodsFor: 'GUI building' stamp: 'ds 11/27/2021 18:48:48'!
+!TusLibrosLoginWindow methodsFor: 'GUI building' stamp: 'TC 11/28/2021 21:23:37'!
 build2ndRow
 
 	| secondRowLayoutMorph |	
 	
-	passwordTextBoxMorph := TextModelMorph textProvider: self model textGetter: #password textSetter: #password:. 
-	passwordTextBoxMorph innerTextMorph setProperty: #keyStroke: toValue: [ :key | passwordTextBoxMorph innerTextMorph acceptContents ] .
-	passwordTextBoxMorph  borderWidth: 1; borderColor: Color skyBlue; morphWidth: 150; morphHeight: 20. 
+	passwordTextBoxMorph := TextModelMorph 
+		textProvider: self model 
+		textGetter: #password 
+		textSetter: #password:. 
+		
+	passwordTextBoxMorph innerTextMorph 
+		setProperty: #keyStroke: 
+		toValue: [ :key | passwordTextBoxMorph innerTextMorph acceptContents ].
+		
+	passwordTextBoxMorph  
+		borderWidth: 1; 
+		borderColor: Color skyBlue; 
+		morphWidth: 150; 
+		morphHeight: 20. 
 		
 	secondRowLayoutMorph := LayoutMorph newRow.
 	secondRowLayoutMorph separation: 5;
@@ -282,12 +350,16 @@ build2ndRow
 	^ secondRowLayoutMorph.
 	! !
 
-!TusLibrosLoginWindow methodsFor: 'GUI building' stamp: 'ds 11/18/2021 17:59:09'!
+!TusLibrosLoginWindow methodsFor: 'GUI building' stamp: 'TC 11/28/2021 21:24:22'!
 build3rdRow
 
 	| loginButtonMorph thirdRowLayoutMorph |	
 	
-	loginButtonMorph := PluggableButtonMorph model: self model stateGetter: nil  action: #sendLoginRequest label: 'Log In'.	
+	loginButtonMorph := PluggableButtonMorph 
+		model: self model 
+		stateGetter: nil  
+		action: #sendLoginRequest 
+		label: 'Log In'.	
 		
 	thirdRowLayoutMorph := LayoutMorph newRow.
 	thirdRowLayoutMorph separation: 25;
@@ -297,15 +369,16 @@ build3rdRow
 	^ thirdRowLayoutMorph.
 	! !
 
-!TusLibrosLoginWindow methodsFor: 'GUI building' stamp: 'ds 11/27/2021 18:49:51'!
+!TusLibrosLoginWindow methodsFor: 'GUI building' stamp: 'TC 11/28/2021 21:24:57'!
 buildMorphicWindow
 		
-	self layoutMorph beColumn;
-	separation: 15;
-	axisEdgeWeight: 0;
-	addMorph: self build1stRow;
-	addMorph: self build2ndRow;
-	addMorph: self build3rdRow.
+	self 
+		layoutMorph beColumn;
+		separation: 15;
+		axisEdgeWeight: 0;
+		addMorph: self build1stRow;
+		addMorph: self build2ndRow;
+		addMorph: self build3rdRow.
 	! !
 
 
@@ -318,7 +391,7 @@ refreshListOfWords
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'TusLibrosLoginWindow class' category: #'TusLibros-Client'!
+!classDefinition: 'TusLibrosLoginWindow class' category: 'TusLibros-Client'!
 TusLibrosLoginWindow class
 	instanceVariableNames: ''!
 
@@ -328,7 +401,7 @@ open
 	^self new initializeWith: 'TusLibros Client - Login'.! !
 
 
-!classDefinition: #TusLibrosTicketWindow category: #'TusLibros-Client'!
+!classDefinition: #TusLibrosTicketWindow category: 'TusLibros-Client'!
 Panel subclass: #TusLibrosTicketWindow
 	instanceVariableNames: 'ticket'
 	classVariableNames: ''
@@ -347,38 +420,43 @@ initializeWith: aTitle for: aTicket
 	self openInWorld.! !
 
 
-!TusLibrosTicketWindow methodsFor: 'GUI building' stamp: 'ds 11/28/2021 17:06:56'!
+!TusLibrosTicketWindow methodsFor: 'GUI building' stamp: 'TC 11/28/2021 21:27:52'!
 addTicketLine: aTicketLine toTicket: aTicketMorph
-	|itemStr priceStr content|
-	
-	itemStr := aTicketLine at: 'item'.
-	priceStr := (aTicketLine at: 'total') asString.
-	content := itemStr, ': ', '$', priceStr.
-	aTicketMorph addMorph: (LabelMorph contents: content).	! !
 
-!TusLibrosTicketWindow methodsFor: 'GUI building' stamp: 'ds 11/28/2021 15:12:01'!
+	| item price lineToPrint |
+	
+	item := aTicketLine at: 'item'.
+	price := (aTicketLine at: 'total') asString.
+	lineToPrint := item, ': ', '$', price.
+	aTicketMorph addMorph: (LabelMorph contents: lineToPrint).	! !
+
+!TusLibrosTicketWindow methodsFor: 'GUI building' stamp: 'TC 11/28/2021 21:31:04'!
 buildMorphicWindow
 		
-	self layoutMorph beColumn;
-	separation: 5;
-	axisEdgeWeight: 0;
-	addMorph: self buildTicketMorph.
+	self 
+		layoutMorph beColumn;
+		separation: 5;
+		axisEdgeWeight: 0;
+		addMorph: self buildTicketMorph.
 	! !
 
-!TusLibrosTicketWindow methodsFor: 'GUI building' stamp: 'ds 11/28/2021 17:07:23'!
+!TusLibrosTicketWindow methodsFor: 'GUI building' stamp: 'TC 11/28/2021 21:29:20'!
 buildTicketMorph
-	|ticketMorph totalStr|
+
+	| ticketMorph saleTotal |
 	ticketMorph := LayoutMorph newColumn.
 	ticketMorph separation: 5.
 	ticketMorph axisEdgeWeight: 0.5.
 	
 	ticketMorph addMorph: (LabelMorph contents: 'Items:').
 	ticketMorph addMorph: (LabelMorph contents: '=====================').
+	
 	(ticket at: 'items' ifAbsent: [#()]) do: [:ticketLine | self addTicketLine: ticketLine toTicket: ticketMorph].
 	ticketMorph addMorph: (LabelMorph contents: '=====================').
+	
 	ticketMorph addMorph: (LabelMorph contents: 'Total:').
-	totalStr := (ticket at: 'total' ifAbsent: [0]) asString.
-	ticketMorph addMorph: (LabelMorph contents: '$',totalStr).
+	saleTotal := (ticket at: 'total' ifAbsent: [0]) asString.
+	ticketMorph addMorph: (LabelMorph contents: '$',saleTotal).
 	
 	^ ticketMorph.
 	! !
@@ -390,28 +468,28 @@ defaultExtent
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'TusLibrosTicketWindow class' category: #'TusLibros-Client'!
+!classDefinition: 'TusLibrosTicketWindow class' category: 'TusLibros-Client'!
 TusLibrosTicketWindow class
 	instanceVariableNames: ''!
 
-!TusLibrosTicketWindow class methodsFor: 'as yet unclassified' stamp: 'ds 11/27/2021 18:23:38'!
+!TusLibrosTicketWindow class methodsFor: 'instance creation' stamp: 'ds 11/27/2021 18:23:38'!
 openFor: aTicket
 	
 	^self new initializeWith: 'TusLibros Client - Ticket' for: aTicket.! !
 
 
-!classDefinition: #CatalogWindowModel category: #'TusLibros-Client'!
+!classDefinition: #CatalogWindowModel category: 'TusLibros-Client'!
 Object subclass: #CatalogWindowModel
 	instanceVariableNames: 'restInterface books user selectedBookIndex cart quantity cartId selectedCartItemIndex password'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'TusLibros-Client'!
 
-!CatalogWindowModel methodsFor: 'initialization' stamp: 'ds 11/28/2021 16:48:08'!
-initializeFor: aCartId andUser: anUser withPassword: aPassword
+!CatalogWindowModel methodsFor: 'initialization' stamp: 'TC 11/28/2021 21:33:00'!
+initializeFor: aCartId andUser: aUser withPassword: aPassword
 	
 	books := OrderedCollection new.
-	user := anUser.
+	user := aUser.
 	password := aPassword.
 	cartId := aCartId.
 	selectedBookIndex := 0.
@@ -422,72 +500,84 @@ initializeFor: aCartId andUser: anUser withPassword: aPassword
 	! !
 
 
-!CatalogWindowModel methodsFor: 'accessors' stamp: 'ds 11/22/2021 12:38:37'!
+!CatalogWindowModel methodsFor: 'accessing' stamp: 'ds 11/22/2021 12:38:37'!
 books
 	
 	^ books.
 	! !
 
-!CatalogWindowModel methodsFor: 'accessors' stamp: 'ds 11/22/2021 12:38:56'!
+!CatalogWindowModel methodsFor: 'accessing' stamp: 'ds 11/22/2021 12:38:56'!
 booksListIndex
 	
 	^ selectedBookIndex.! !
 
-!CatalogWindowModel methodsFor: 'accessors' stamp: 'ds 11/22/2021 12:39:35'!
+!CatalogWindowModel methodsFor: 'accessing' stamp: 'ds 11/22/2021 12:39:35'!
 booksListIndex: anIndex
 	
 	selectedBookIndex := anIndex.! !
 
-!CatalogWindowModel methodsFor: 'accessors' stamp: 'ds 11/22/2021 14:07:10'!
+!CatalogWindowModel methodsFor: 'accessing' stamp: 'ds 11/22/2021 14:07:10'!
 cart
 	
 	^ cart.
 	! !
 
-!CatalogWindowModel methodsFor: 'accessors' stamp: 'ds 11/22/2021 14:07:20'!
+!CatalogWindowModel methodsFor: 'accessing' stamp: 'ds 11/22/2021 14:07:20'!
 cartListIndex
 	
 	^ selectedCartItemIndex.! !
 
-!CatalogWindowModel methodsFor: 'accessors' stamp: 'ds 11/22/2021 14:07:37'!
+!CatalogWindowModel methodsFor: 'accessing' stamp: 'ds 11/22/2021 14:07:37'!
 cartListIndex: anIndex
 	
 	selectedCartItemIndex := anIndex.! !
 
-!CatalogWindowModel methodsFor: 'accessors' stamp: 'ds 11/22/2021 12:58:42'!
+!CatalogWindowModel methodsFor: 'accessing' stamp: 'ds 11/22/2021 12:58:42'!
 quantity
 	
 	^ quantity.! !
 
-!CatalogWindowModel methodsFor: 'accessors' stamp: 'ds 11/22/2021 12:58:50'!
+!CatalogWindowModel methodsFor: 'accessing' stamp: 'ds 11/22/2021 12:58:50'!
 quantity: aQuantity
 	
 	quantity := aQuantity.! !
 
 
-!CatalogWindowModel methodsFor: 'events - requests' stamp: 'ds 11/28/2021 18:20:25'!
+!CatalogWindowModel methodsFor: 'events - requests' stamp: 'TC 11/28/2021 21:35:09'!
 sendAddToCartRequest
-	| book sentQuantity|
+
+	| book sentQuantity |
+	
 	selectedBookIndex < 1 ifTrue: [^nil].
+	
 	book := books at: selectedBookIndex.	
 	sentQuantity := quantity ifEmpty: [1]  ifNotEmpty: [quantity].
-	restInterface sendAddToCartFor: cartId withBook: book withQuantity: sentQuantity.
+	
+	restInterface 
+		sendAddToCartFor: cartId 
+		withBook: book 
+		withQuantity: sentQuantity.
+	
 	self sendListCartRequest.
 	self triggerEvent: #addedToCart.
 	! !
 
-!CatalogWindowModel methodsFor: 'events - requests' stamp: 'ds 11/28/2021 16:03:30'!
+!CatalogWindowModel methodsFor: 'events - requests' stamp: 'TC 11/28/2021 21:35:37'!
 sendCatalogRequest
+
 	| bookDict |	
+	
 	bookDict := restInterface sendCatalogRequest.
-	books addAll: (bookDict keys).
+	books addAll: bookDict keys.
+	
 	self triggerEvent: #booksArrived.
 	! !
 
-!CatalogWindowModel methodsFor: 'events - requests' stamp: 'ds 11/28/2021 17:02:35'!
+!CatalogWindowModel methodsFor: 'events - requests' stamp: 'TC 11/28/2021 21:35:49'!
 sendCheckoutRequest
 	
-	|ticket|
+	| ticket |
+	
 	ticket := restInterface sendCheckoutRequestFor: cartId.
 	TusLibrosTicketWindow openFor: ticket.
 	self cleanCart.! !
@@ -504,9 +594,11 @@ sendListCartRequest
 	cart := restInterface sendListCartRequestFor: cartId.
 	! !
 
-!CatalogWindowModel methodsFor: 'events - requests' stamp: 'ds 11/27/2021 19:39:27'!
+!CatalogWindowModel methodsFor: 'events - requests' stamp: 'TC 11/28/2021 21:36:08'!
 sendListPurchasesRequest
+
 	| purchasesDict |	
+
 	purchasesDict := restInterface sendListPurchasesRequest: user withPassword: password.
 	TusLibrosListPurchasesWindow openFor: purchasesDict.
 	! !
@@ -535,42 +627,42 @@ cleanCart
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'CatalogWindowModel class' category: #'TusLibros-Client'!
+!classDefinition: 'CatalogWindowModel class' category: 'TusLibros-Client'!
 CatalogWindowModel class
 	instanceVariableNames: ''!
 
-!CatalogWindowModel class methodsFor: 'as yet unclassified' stamp: 'ds 11/27/2021 19:35:47'!
-for: aCartId andUser: anUser withPassword: aPassword
+!CatalogWindowModel class methodsFor: 'instance creation' stamp: 'TC 11/28/2021 21:32:16'!
+for: aCartId andUser: aUser withPassword: aPassword
 
-	^ self new initializeFor: aCartId andUser: anUser withPassword: aPassword.! !
+	^ self new initializeFor: aCartId andUser: aUser withPassword: aPassword.! !
 
 
-!classDefinition: #LoginWindowModel category: #'TusLibros-Client'!
+!classDefinition: #LoginWindowModel category: 'TusLibros-Client'!
 Object subclass: #LoginWindowModel
-	instanceVariableNames: 'restInterface user password cart'
+	instanceVariableNames: 'restInterface user password'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'TusLibros-Client'!
 
-!LoginWindowModel methodsFor: 'accessors' stamp: 'ds 11/18/2021 18:01:53'!
+!LoginWindowModel methodsFor: 'accessing' stamp: 'TC 11/28/2021 21:07:50'!
 password
 	
-	^password.! !
+	^ password.! !
 
-!LoginWindowModel methodsFor: 'accessors' stamp: 'ds 11/18/2021 18:02:08'!
+!LoginWindowModel methodsFor: 'accessing' stamp: 'ds 11/18/2021 18:02:08'!
 password: aPassword
 	
 	password := aPassword.! !
 
-!LoginWindowModel methodsFor: 'accessors' stamp: 'ds 11/18/2021 18:01:31'!
+!LoginWindowModel methodsFor: 'accessing' stamp: 'TC 11/28/2021 21:08:00'!
 user
 	
-	^user.! !
+	^ user.! !
 
-!LoginWindowModel methodsFor: 'accessors' stamp: 'ds 11/18/2021 18:01:39'!
-user: anUser
+!LoginWindowModel methodsFor: 'accessing' stamp: 'TC 11/28/2021 21:32:35'!
+user: aUser
 	
-	user := anUser.! !
+	user := aUser.! !
 
 
 !LoginWindowModel methodsFor: 'initialization' stamp: 'ds 11/18/2021 17:57:52'!
@@ -581,9 +673,11 @@ initialize
 	restInterface := TusLibrosRestClient new.! !
 
 
-!LoginWindowModel methodsFor: 'events - requests' stamp: 'ds 11/28/2021 16:01:39'!
+!LoginWindowModel methodsFor: 'events - requests' stamp: 'TC 11/28/2021 21:32:46'!
 sendLoginRequest
-	| response cartId|	
+
+	| response cartId |	
+
 	response := restInterface sendCreateCartAs: user withPassword: password.
 	cartId := response at: 'cartId' ifAbsent: [
 		PopUpMenu inform: (response at: 'message').
@@ -594,7 +688,7 @@ sendLoginRequest
 	! !
 
 
-!classDefinition: #TusLibrosRestClient category: #'TusLibros-Client'!
+!classDefinition: #TusLibrosRestClient category: 'TusLibros-Client'!
 Object subclass: #TusLibrosRestClient
 	instanceVariableNames: 'port'
 	classVariableNames: ''

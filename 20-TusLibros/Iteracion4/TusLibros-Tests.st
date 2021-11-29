@@ -1,4 +1,4 @@
-!classDefinition: #CartTest category: #'TusLibros-Tests'!
+!classDefinition: #CartTest category: 'TusLibros-Tests'!
 TestCase subclass: #CartTest
 	instanceVariableNames: 'testObjectsFactory'
 	classVariableNames: ''
@@ -98,7 +98,7 @@ setUp
 	testObjectsFactory := StoreTestObjectsFactory new.! !
 
 
-!classDefinition: #CashierTest category: #'TusLibros-Tests'!
+!classDefinition: #CashierTest category: 'TusLibros-Tests'!
 TestCase subclass: #CashierTest
 	instanceVariableNames: 'testObjectsFactory debitBehavior'
 	classVariableNames: ''
@@ -252,7 +252,7 @@ debit: anAmount from: aCreditCard
 	^debitBehavior value: anAmount value: aCreditCard ! !
 
 
-!classDefinition: #TusLibrosRestClientTest category: #'TusLibros-Tests'!
+!classDefinition: #TusLibrosRestClientTest category: 'TusLibros-Tests'!
 TestCase subclass: #TusLibrosRestClientTest
 	instanceVariableNames: ''
 	classVariableNames: ''
@@ -273,16 +273,17 @@ createServer
 	self destroyAllRunningServers.
 	^ TusLibrosRestServer listeningOn: 8080.! !
 
-!TusLibrosRestClientTest methodsFor: 'auxiliar' stamp: 'ds 11/28/2021 15:37:31'!
+!TusLibrosRestClientTest methodsFor: 'auxiliar' stamp: 'TC 11/28/2021 21:45:45'!
 destroyAllRunningServers
 	
 	TusLibrosRestServer allInstances do: [:instance | instance destroy].! !
 
 
-!TusLibrosRestClientTest methodsFor: 'test - check out cart' stamp: 'ds 11/28/2021 16:45:19'!
-test15_checkOutCart
+!TusLibrosRestClientTest methodsFor: 'tests - check out cart' stamp: 'TC 11/28/2021 21:53:50'!
+test15_checkingOutCartRespondsWithTotalPriceOfItsContent
 	
-	| server client response cartId|
+	| server client response cartId |
+	
 	server := self createServer.
 	client := TusLibrosRestClient new.
 	cartId := self createCartUsing: client.
@@ -296,8 +297,8 @@ test15_checkOutCart
 	server destroy.! !
 
 
-!TusLibrosRestClientTest methodsFor: 'test - create cart' stamp: 'ds 11/28/2021 15:38:12'!
-test01_createCartWrongPassword
+!TusLibrosRestClientTest methodsFor: 'tests - create cart' stamp: 'TC 11/28/2021 21:54:15'!
+test01_creatingCartWithIncorrectPasswordThrowsAnErrorResponse
 	
 	| server client response |
 	server := self createServer.
@@ -309,8 +310,8 @@ test01_createCartWrongPassword
 		equals: (response at: 'message').
 	server destroy.! !
 
-!TusLibrosRestClientTest methodsFor: 'test - create cart' stamp: 'ds 11/28/2021 15:38:18'!
-test02_createCartWrongUser
+!TusLibrosRestClientTest methodsFor: 'tests - create cart' stamp: 'TC 11/28/2021 20:52:13'!
+test02_creatingCartWithNonExistingUserThrowsAnErrorResponse
 	
 	| server client response |
 	server := self createServer.
@@ -322,8 +323,8 @@ test02_createCartWrongUser
 		equals: (response at: 'message').
 	server destroy.! !
 
-!TusLibrosRestClientTest methodsFor: 'test - create cart' stamp: 'ds 11/28/2021 15:38:21'!
-test03_createCartCorrectly
+!TusLibrosRestClientTest methodsFor: 'tests - create cart' stamp: 'TC 11/28/2021 20:52:55'!
+test03_creatingCartCorrectlyRespondsWithACartId
 	
 	| server client response |
 	server := self createServer.
@@ -335,8 +336,8 @@ test03_createCartCorrectly
 	server destroy.! !
 
 
-!TusLibrosRestClientTest methodsFor: 'test - add to cart' stamp: 'ds 11/28/2021 15:45:34'!
-test04_addToCartWrongCart
+!TusLibrosRestClientTest methodsFor: 'tests - add to cart' stamp: 'TC 11/28/2021 21:00:22'!
+test04_addingItemToInvalidCartThrowsAnErrorResponse
 	
 	| server client cartId response |
 	server := self createServer.
@@ -348,8 +349,8 @@ test04_addToCartWrongCart
 	
 	server destroy.! !
 
-!TusLibrosRestClientTest methodsFor: 'test - add to cart' stamp: 'ds 11/28/2021 15:46:15'!
-test05_addToCartWrongBook
+!TusLibrosRestClientTest methodsFor: 'tests - add to cart' stamp: 'TC 11/28/2021 20:55:13'!
+test05_addingItemNotInCatalogToCartThrowsAnErrorResponse
 	
 	| server client cartId response |
 	server := self createServer.
@@ -361,8 +362,8 @@ test05_addToCartWrongBook
 	
 	server destroy.! !
 
-!TusLibrosRestClientTest methodsFor: 'test - add to cart' stamp: 'ds 11/28/2021 15:46:41'!
-test06_addToCartWrongAmount
+!TusLibrosRestClientTest methodsFor: 'tests - add to cart' stamp: 'TC 11/28/2021 20:55:25'!
+test06_addingANonPositiveItemQuantityToCartThrowsAnErrorResponse
 	
 	| server client cartId response |
 	server := self createServer.
@@ -374,8 +375,8 @@ test06_addToCartWrongAmount
 	
 	server destroy.! !
 
-!TusLibrosRestClientTest methodsFor: 'test - add to cart' stamp: 'ds 11/28/2021 15:59:27'!
-test07_addToCartCorrectly
+!TusLibrosRestClientTest methodsFor: 'tests - add to cart' stamp: 'TC 11/28/2021 21:54:53'!
+test07_addingItemsToCartRespondsWithOKAndListingCartRespondsWithCollectionOfAddedItems
 	
 	| server client cartId response |
 	server := self createServer.
@@ -392,21 +393,21 @@ test07_addToCartCorrectly
 	server destroy.! !
 
 
-!TusLibrosRestClientTest methodsFor: 'test - catalog' stamp: 'ds 11/28/2021 16:09:37'!
-test08_listCatalog
+!TusLibrosRestClientTest methodsFor: 'tests - catalog' stamp: 'TC 11/28/2021 21:59:07'!
+test08_listingCatalogRespondsWithCollectionOfAvailableItems
 	
 	| server client response |
 	server := self createServer.
 	client := TusLibrosRestClient new.
 	
 	response := client sendCatalogRequest.
-	self assert: (StoreTestObjectsFactory sampleServerCatalog) equals: response.
+	self assert: (StoreTestObjectsFactory new sampleServerCatalog) equals: response.
 	
 	server destroy.! !
 
 
-!TusLibrosRestClientTest methodsFor: 'test - list cart' stamp: 'ds 11/28/2021 15:56:12'!
-test09_listCartEmpty
+!TusLibrosRestClientTest methodsFor: 'tests - list cart' stamp: 'TC 11/28/2021 20:58:14'!
+test09_listingEmptyCartYieldsEmptyResponse
 	
 	| server client cartId response |
 	server := self createServer.
@@ -418,8 +419,8 @@ test09_listCartEmpty
 		
 	server destroy.! !
 
-!TusLibrosRestClientTest methodsFor: 'test - list cart' stamp: 'ds 11/28/2021 15:58:13'!
-test10_listCartNotEmpty
+!TusLibrosRestClientTest methodsFor: 'tests - list cart' stamp: 'TC 11/28/2021 21:56:19'!
+test10_listingNonEmptyCartRespondsWithCollectionOfItsContent
 	
 	| server client cartId response cartContents |
 	server := self createServer.
@@ -439,8 +440,8 @@ test10_listCartNotEmpty
 	server destroy.! !
 
 
-!TusLibrosRestClientTest methodsFor: 'test - remove from cart' stamp: 'ds 11/28/2021 16:11:32'!
-test11_removeFromCartInvalidCart
+!TusLibrosRestClientTest methodsFor: 'tests - remove from cart' stamp: 'TC 11/28/2021 21:00:01'!
+test11_removingItemFromInvalidCartThrowsAnErrorResponse
 	
 	| server client cartId response |
 	server := self createServer.
@@ -452,8 +453,8 @@ test11_removeFromCartInvalidCart
 		
 	server destroy.! !
 
-!TusLibrosRestClientTest methodsFor: 'test - remove from cart' stamp: 'ds 11/28/2021 16:14:12'!
-test12_removeFromCart
+!TusLibrosRestClientTest methodsFor: 'tests - remove from cart' stamp: 'TC 11/28/2021 21:01:05'!
+test12_removingItemFromValidCartRespondsWithOK
 	
 	| server client cartId response |
 	server := self createServer.
@@ -466,8 +467,8 @@ test12_removeFromCart
 	server destroy.! !
 
 
-!TusLibrosRestClientTest methodsFor: 'test - list purchases' stamp: 'ds 11/28/2021 16:16:24'!
-test13_listPurchasesWrongPassword
+!TusLibrosRestClientTest methodsFor: 'tests - list purchases' stamp: 'TC 11/28/2021 21:01:32'!
+test13_listingPurchasesOfNonExistingUserThrowsAnErrorResponse
 	
 	| server client response |
 	server := self createServer.
@@ -479,8 +480,8 @@ test13_listPurchasesWrongPassword
 		
 	server destroy.! !
 
-!TusLibrosRestClientTest methodsFor: 'test - list purchases' stamp: 'ds 11/28/2021 16:17:31'!
-test14_listPurchasesNewUser
+!TusLibrosRestClientTest methodsFor: 'tests - list purchases' stamp: 'TC 11/28/2021 21:02:07'!
+test14_listingPurchasesOfNewUserRespondsWithEmptyCollection
 	
 	| server client response |
 	server := self createServer.
@@ -492,8 +493,8 @@ test14_listPurchasesNewUser
 	server destroy.! !
 
 
-!TusLibrosRestClientTest methodsFor: 'test - clean cart' stamp: 'ds 11/28/2021 16:45:03'!
-test17_cleanCart
+!TusLibrosRestClientTest methodsFor: 'tests - clean cart' stamp: 'TC 11/28/2021 22:03:21'!
+test16_cleaningCartRespondsWithAnEmptyCollection
 	
 	| server client cartId|
 	server := self createServer.
@@ -510,7 +511,7 @@ test17_cleanCart
 	server destroy.! !
 
 
-!classDefinition: #TusLibrosSystemFacadeTest category: #'TusLibros-Tests'!
+!classDefinition: #TusLibrosSystemFacadeTest category: 'TusLibros-Tests'!
 TestCase subclass: #TusLibrosSystemFacadeTest
 	instanceVariableNames: 'testObjectsFactory clock systemFacade'
 	classVariableNames: ''
@@ -892,7 +893,7 @@ assertListPurchasesResponseIsEmpty: aListPurchasesResponse
 	self assert: ((aListPurchasesResponse at: 'items') isEmpty).! !
 
 
-!classDefinition: #ManualClock category: #'TusLibros-Tests'!
+!classDefinition: #ManualClock category: 'TusLibros-Tests'!
 Clock subclass: #ManualClock
 	instanceVariableNames: 'now'
 	classVariableNames: ''
@@ -928,7 +929,7 @@ initializeNow: aTime
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'ManualClock class' category: #'TusLibros-Tests'!
+!classDefinition: 'ManualClock class' category: 'TusLibros-Tests'!
 ManualClock class
 	instanceVariableNames: ''!
 
@@ -938,7 +939,7 @@ now: aTime
 	^self new initializeNow: aTime ! !
 
 
-!classDefinition: #StoreTestObjectsFactory category: #'TusLibros-Tests'!
+!classDefinition: #StoreTestObjectsFactory category: 'TusLibros-Tests'!
 Object subclass: #StoreTestObjectsFactory
 	instanceVariableNames: 'today'
 	classVariableNames: ''
@@ -1033,15 +1034,12 @@ customer
 
 	^'aCustomer'! !
 
-"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'StoreTestObjectsFactory class' category: #'TusLibros-Tests'!
-StoreTestObjectsFactory class
-	instanceVariableNames: ''!
-
-!StoreTestObjectsFactory class methodsFor: 'as yet unclassified' stamp: 'ds 11/28/2021 16:08:00'!
+!StoreTestObjectsFactory methodsFor: 'server catalog' stamp: 'TC 11/28/2021 21:58:44'!
 sampleServerCatalog
+
 	| sampleCatalog |
+	
 	sampleCatalog := Dictionary new.
 	sampleCatalog add: 'validBook1'->19.
 	sampleCatalog add: 'validBook2'->5.
@@ -1050,4 +1048,5 @@ sampleServerCatalog
 	sampleCatalog add: 'validBook25Pesos'->25.
 	sampleCatalog add: 'validBook50Pesos'->50.
 	sampleCatalog add: 'validBook100Pesos'->100.
+	
 	^ sampleCatalog.! !
